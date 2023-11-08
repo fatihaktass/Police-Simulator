@@ -24,6 +24,7 @@ public class MouseInput : MonoBehaviour
         transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
 
         player.Rotate(Vector3.up * mouseXPos);
+
     }
 
 

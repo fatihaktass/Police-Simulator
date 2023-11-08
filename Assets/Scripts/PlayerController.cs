@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     Vector3 gravityVector;
     public float gravity;
     public float gravitySphereRadius;
-    public bool isGrounded;
+     bool isGrounded;
     public LayerMask groundMask;
 
     // Start is called before the first frame update
@@ -59,4 +59,10 @@ public class PlayerController : MonoBehaviour
             gravityVector.y = Mathf.Sqrt(jumpForce * -2f * gravity);
         }
     }
+
+    public bool IsGrounded()
+    {
+        return isGrounded;
+    }
+
 }
