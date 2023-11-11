@@ -6,6 +6,7 @@ public class PlayerAnimations : MonoBehaviour
 {
     public Animator animator;
     public PlayerController playerController;
+    public Camera playerCamera;
 
     // Start is called before the first frame update
     void Start()
@@ -26,10 +27,12 @@ public class PlayerAnimations : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             animator.SetBool("isRunning", true);
+            playerController.playerSpeed = 6f;
         }
         else
         {
             animator.SetBool("isRunning", false);
+            playerController.playerSpeed = 3.5f;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && playerController.IsGrounded())

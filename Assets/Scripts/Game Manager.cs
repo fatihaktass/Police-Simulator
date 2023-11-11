@@ -4,15 +4,44 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    int gameScore = 0;
+    public GameObject[] npcs;
+    public GameObject[] area1Spawnps, area2Spawnps; // npclerin bölgelere göre doðacaðý noktalar
+    public GameObject[] exitpoints; // npclerin gideceði noktalar
+    public bool area1;
+
     void Start()
     {
-        
+        StartCoroutine(NPCSpawner());
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddGameScore()
     {
-        
+        Debug.Log(gameScore);
+        gameScore++;
+        Debug.Log("new: " + gameScore);
+    }
+
+    IEnumerator NPCSpawner()
+    {
+        while (gameScore < 5)
+        {
+            if (area1) // oyuncunun görev yeri 1. bölge ise çalýþýr 
+            {
+                yield return new WaitForSeconds(1f);
+                int RandomNPCIndex = Random.Range(0, npcs.Length);
+                int randomSpawnpointsIndex = Random.Range(0, area1Spawnps.Length);
+                Instantiate(npcs[RandomNPCIndex], area1Spawnps[randomSpawnpointsIndex].transform.position, Quaternion.identity);
+                AddGameScore();
+            }
+            if (!area1) // oyuncunun görev yeri 2. bölge ise çalýþýr
+            {
+                 yield return new WaitForSeconds(1f);
+                 int RandomNPCIndex = Random.Range(0, npcs.Length);
+                 int randomSpawnpointsIndex = Random.Range(0, area2Spawnps.Length);
+                 Instantiate(npcs[RandomNPCIndex], area2Spawnps[randomSpawnpointsIndex].transform.position, Quaternion.identity);
+                 AddGameScore();
+            }
+        }
     }
 }

@@ -1,16 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MouseInput : MonoBehaviour
 {
+    public Camera cam;
     public Transform player;
     public float mouseSensivity;
     float xRotation;
+    float fieldOfViewSpeed = 24f;
 
     void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;   
+        cam = GetComponent<Camera>();
     }
 
     private void Update()
@@ -25,7 +29,12 @@ public class MouseInput : MonoBehaviour
 
         player.Rotate(Vector3.up * mouseXPos);
 
+        CamFieldOfView();
     }
 
+    private void CamFieldOfView()
+    {
+        cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - (Input.GetKey(KeyCode.LeftShift) ? -1 : 1) * fieldOfViewSpeed * Time.deltaTime, 66f, 72f);
+    }
 
 }
