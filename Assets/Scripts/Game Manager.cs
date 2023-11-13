@@ -17,9 +17,8 @@ public class GameManager : MonoBehaviour
 
     public void AddGameScore()
     {
-        Debug.Log(gameScore);
         gameScore++;
-        Debug.Log("new: " + gameScore);
+       
     }
 
     IEnumerator NPCSpawner()
@@ -43,5 +42,11 @@ public class GameManager : MonoBehaviour
                  AddGameScore();
             }
         }
+    }
+
+    public GameObject ExitPoints()
+    {
+        int RandomExitPoints = Random.Range(0,exitpoints.Length);
+        return exitpoints[RandomExitPoints];
     }
 }

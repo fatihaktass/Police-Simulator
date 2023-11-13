@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public float gravity;
     public float gravitySphereRadius;
     bool isGrounded;
-    public LayerMask groundMask;
+    public LayerMask groundMask,npcLayer;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +27,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         CharacterMovements();
-        GravityAndJump();
+        GravityAndJump(); 
+        
     }
 
     void CharacterMovements()
@@ -35,8 +36,8 @@ public class PlayerController : MonoBehaviour
         float horizontalMovement = Input.GetAxis("Horizontal");
         float verticalMovement = Input.GetAxis("Vertical");
 
-        Vector3 moveVector = (horizontalMovement * transform.right + verticalMovement * transform.forward);
-        charController.Move(moveVector.normalized * playerSpeed * Time.deltaTime);
+        Vector3 moveVector = (horizontalMovement * transform.right + verticalMovement * transform.forward).normalized;
+        charController.Move(moveVector * playerSpeed * Time.deltaTime);
     }
 
     void GravityAndJump()
