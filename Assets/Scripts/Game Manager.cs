@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] area1Spawnps, area2Spawnps; // npclerin bölgelere göre doðacaðý noktalar
     public GameObject[] exitpoints; // npclerin gideceði noktalar
     public bool area1;
+    public TextMeshProUGUI QueryTMP;
 
     void Start()
     {
@@ -18,7 +20,6 @@ public class GameManager : MonoBehaviour
     public void AddGameScore()
     {
         gameScore++;
-       
     }
 
     IEnumerator NPCSpawner()
@@ -46,7 +47,22 @@ public class GameManager : MonoBehaviour
 
     public GameObject ExitPoints()
     {
-        int RandomExitPoints = Random.Range(0,exitpoints.Length);
+        int RandomExitPoints = Random.Range(0,exitpoints.Length); 
         return exitpoints[RandomExitPoints];
+    }
+
+    public void QueryText(bool isOpening)
+    {
+        // NPClerin yanýndayken üst-ortada sorgula yazýsýný açýp kapatýr.
+        if (isOpening)
+        {
+            QueryTMP.alpha = 1f;
+        }
+        if (!isOpening)
+        {
+            float currentValue = QueryTMP.alpha -= 3f * Time.deltaTime;
+            currentValue = Mathf.Clamp01(currentValue);
+            QueryTMP.alpha = currentValue;
+        }
     }
 }

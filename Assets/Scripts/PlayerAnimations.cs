@@ -8,14 +8,12 @@ public class PlayerAnimations : MonoBehaviour
     public PlayerController playerController;
     public Camera playerCamera;
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         playerController = GetComponentInParent<PlayerController>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         float horizontal = Input.GetAxis("Horizontal");

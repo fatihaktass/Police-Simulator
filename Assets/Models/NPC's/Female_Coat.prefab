@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: -5827398985118883584}
   - component: {fileID: -1622363529514468422}
   - component: {fileID: 7737236137695795227}
+  - component: {fileID: 54765084270440128}
   m_Layer: 8
   m_Name: Female_Coat
   m_TagString: Untagged
@@ -135,10 +136,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  gameManager: {fileID: 0}
+  anim: {fileID: 0}
   checkingLayers:
     serializedVersion: 2
     m_Bits: 128
+  isFemale: 0
+  gameManager: {fileID: 0}
 --- !u!136 &7737236137695795227
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -158,10 +161,32 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2.316194
+  m_Radius: 0.3
+  m_Height: 1.86
   m_Direction: 1
-  m_Center: {x: 0, y: 0.658097, z: 0}
+  m_Center: {x: 0.024129748, y: 0.894933, z: 0}
+--- !u!95 &54765084270440128
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473249495818612226}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 57c4ce18aaf96a942b51b3348847cb8c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &713947325698476868
 GameObject:
   m_ObjectHideFlags: 0

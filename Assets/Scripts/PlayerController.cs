@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public CharacterController charController;
+    public GameManager gameManager;
     public float playerSpeed = 5f;
     public float jumpForce = 5f;
 
@@ -21,14 +22,15 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         charController = GetComponent<CharacterController>();
+        gameManager = FindFirstObjectByType<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
         CharacterMovements();
-        GravityAndJump(); 
-        
+        GravityAndJump();
+        ParentQueryText();
     }
 
     void CharacterMovements()
@@ -66,4 +68,9 @@ public class PlayerController : MonoBehaviour
         return isGrounded;
     }
 
+    void ParentQueryText()
+    {
+        bool isInteracting = Physics.CheckSphere(transform.position, 2.4f, npcLayer);
+        gameManager.QueryText(isInteracting);
+    }
 }

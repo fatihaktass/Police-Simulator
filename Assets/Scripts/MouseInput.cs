@@ -19,8 +19,8 @@ public class MouseInput : MonoBehaviour
 
     private void Update()
     {
-         float mouseXPos = Input.GetAxis("Mouse X") * mouseSensivity * Time.deltaTime;
-         float mouseYPos = Input.GetAxis("Mouse Y") * mouseSensivity * Time.deltaTime;
+        float mouseXPos = Input.GetAxis("Mouse X") * mouseSensivity * Time.deltaTime;
+        float mouseYPos = Input.GetAxis("Mouse Y") * mouseSensivity * Time.deltaTime;
 
         xRotation -= mouseYPos;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
@@ -32,7 +32,7 @@ public class MouseInput : MonoBehaviour
         CamFieldOfView();
     }
 
-    private void CamFieldOfView()
+    private void CamFieldOfView() // Koþarken-yürürken kamera görüþ açýsýný geniþletip daraltmaya yarar.
     {
         cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - (Input.GetKey(KeyCode.LeftShift) ? -1 : 1) * fieldOfViewSpeed * Time.deltaTime, 66f, 72f);
     }
