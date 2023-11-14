@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] exitpoints; // npclerin gideceði noktalar
     public bool area1;
     public TextMeshProUGUI QueryTMP;
+    public bool AllowF= true;
 
     void Start()
     {
@@ -64,5 +65,18 @@ public class GameManager : MonoBehaviour
             currentValue = Mathf.Clamp01(currentValue);
             QueryTMP.alpha = currentValue;
         }
+    }
+
+    public bool FKeyIsAllowed(bool active)
+    {
+        if (active)
+        {
+            AllowF = true;
+        }
+        if (!active)
+        {
+            AllowF = false;
+        }
+        return AllowF;
     }
 }

@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     Vector3 gravityVector;
     public float gravity;
     public float gravitySphereRadius;
-    bool isGrounded;
+    public bool isGrounded;
     public LayerMask groundMask,npcLayer;
 
     // Start is called before the first frame update

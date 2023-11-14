@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+using UnityEngine.UI;
 
 public class NPC : MonoBehaviour
 {
@@ -12,16 +12,18 @@ public class NPC : MonoBehaviour
     public LayerMask checkingLayers;
     
     bool interactPlayer;
-    bool Interacted;
+    bool Interacting;
     public bool isFemale;
     
     public GameManager gameManager;
+    Transform cameraTransform;
 
     void Start()
     {
         gameManager = FindFirstObjectByType<GameManager>();
         anim = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        cameraTransform = GameObject.FindWithTag("MainCamera").transform;
         agentDestination = gameManager.ExitPoints().transform.position;
         agent.SetDestination(agentDestination);
     }
@@ -29,27 +31,36 @@ public class NPC : MonoBehaviour
     private void Update()
     {
         InteractNPC();
-        AnimationForNPC();
+        AnimationGenderForNPC();
     }
 
     void InteractNPC()
     {
         interactPlayer = Physics.CheckSphere(transform.position, 2.4f, checkingLayers);
-        if (interactPlayer && Input.GetKeyDown(KeyCode.F) && !Interacted)
+        if (interactPlayer && Input.GetKeyDown(KeyCode.F) && gameManager.AllowF && !Interacting)
         {
             agent.isStopped = true;
-            Interacted = true;
+            Interacting = true;
             anim.SetBool("isInteracting", true);
+            gameManager.FKeyIsAllowed(false);
         }
-        if (!interactPlayer && Interacted)
+        if (!interactPlayer && Interacting)
         {
             agent.isStopped = false;
-            Interacted = false;
+            Interacting = false;
             anim.SetBool("isInteracting", false);
+            gameManager.FKeyIsAllowed(true);
+        }
+        if (Interacting)
+        {
+            Vector3 targetPosition = new(cameraTransform.transform.position.x,
+                                                transform.position.y,
+                                                cameraTransform.transform.position.z);
+            gameObject.transform.LookAt(targetPosition);
         }
     }
 
-    void AnimationForNPC()
+    void AnimationGenderForNPC()
     {
         if (isFemale)
         {

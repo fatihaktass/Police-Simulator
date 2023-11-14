@@ -35,11 +35,11 @@ public class PlayerAnimations : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && playerController.IsGrounded())
         {
-            animator.SetBool("isGrounded", playerController.IsGrounded());
+            animator.SetBool("isJumping", playerController.IsGrounded());
         }
         else
         {
-            animator.SetBool("isGrounded", false);
+            animator.SetBool("isJumping", !playerController.IsGrounded());
         }
     }
 }
