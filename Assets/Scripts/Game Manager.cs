@@ -2,19 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     int gameScore = 0;
+
     public GameObject[] npcs;
     public GameObject[] area1Spawnps, area2Spawnps; // npclerin bölgelere göre doðacaðý noktalar
     public GameObject[] exitpoints; // npclerin gideceði noktalar
-    public bool area1;
+
+    public bool area1; // Hangi bölgede görev yapacaðýný sorguluyor.
+    public bool AllowFKey = true; // F tuþuna basmayý kýsýtlýyor.
+
     public TextMeshProUGUI QueryTMP;
-    public bool AllowF= true;
+    public GameObject InteractPanel, NpcsIdentityPanel;
+    public Button identityButton, questionButton, arrestButton, releaseButton;
+
+    public PlayerController playerController;
+    public MouseInput mouseInput;
 
     void Start()
     {
+        playerController = FindFirstObjectByType<PlayerController>();
+        mouseInput = FindFirstObjectByType<MouseInput>();
         StartCoroutine(NPCSpawner());
     }
 
@@ -67,16 +78,45 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool FKeyIsAllowed(bool active)
+    public bool FKeyandPlayerActions(bool active)
     {
         if (active)
         {
-            AllowF = true;
+            AllowFKey = true;
+            playerController.isAction = false; // Oyuncu hareket edebilir.
+            mouseInput.mouseActivity = false; // kamera hareketleri aktif.
+            NPCsIdentity(false); // Kimlik gözüküyor ise kapatýr.
         }
         if (!active)
         {
-            AllowF = false;
+            AllowFKey = false;
+            playerController.isAction = true; // Oyuncu hareket edemez.
+            mouseInput.mouseActivity = true; // kamera hareketleri kapalý.
         }
-        return AllowF;
+        return AllowFKey;
+    }
+
+    public void OpenInteractPanel(bool isActive)
+    {
+        if (isActive)
+        {
+            InteractPanel.SetActive(true);
+        }
+        if (!isActive)
+        {
+            InteractPanel.SetActive(false);
+        }
+    }
+
+    public void ReleaseNpc()
+    {
+        FKeyandPlayerActions(true);
+        Cursor.lockState = CursorLockMode.Locked;
+        InteractPanel.SetActive(false);
+    }
+
+    public void NPCsIdentity(bool isActive)
+    {
+        NpcsIdentityPanel.SetActive(isActive);
     }
 }

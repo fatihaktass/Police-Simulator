@@ -10,6 +10,7 @@ public class MouseInput : MonoBehaviour
     public float mouseSensivity;
     float xRotation;
     float fieldOfViewSpeed = 24f;
+    public bool mouseActivity;
 
     void Awake()
     {
@@ -18,6 +19,15 @@ public class MouseInput : MonoBehaviour
     }
 
     private void Update()
+    {
+        if (!mouseActivity)
+        {
+            MouseInputs();
+            CamFieldOfView();
+        }
+    }
+
+    void MouseInputs()
     {
         float mouseXPos = Input.GetAxis("Mouse X") * mouseSensivity * Time.deltaTime;
         float mouseYPos = Input.GetAxis("Mouse Y") * mouseSensivity * Time.deltaTime;
@@ -28,8 +38,6 @@ public class MouseInput : MonoBehaviour
         transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
 
         player.Rotate(Vector3.up * mouseXPos);
-
-        CamFieldOfView();
     }
 
     private void CamFieldOfView() // Koþarken-yürürken kamera görüþ açýsýný geniþletip daraltmaya yarar.

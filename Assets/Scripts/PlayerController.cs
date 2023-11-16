@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public GameManager gameManager;
     public float playerSpeed = 5f;
     public float jumpForce = 5f;
-
+    public bool isAction;
 
     // Gravity
     public Transform gravitySphere;
@@ -28,9 +28,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CharacterMovements();
-        GravityAndJump();
-        ParentQueryText();
+        if (!isAction)
+        {
+            CharacterMovements();
+            Jump();
+            ParentQueryText();
+        }
+        Gravity();
     }
 
     void CharacterMovements()
@@ -42,7 +46,7 @@ public class PlayerController : MonoBehaviour
         charController.Move(moveVector * playerSpeed * Time.deltaTime);
     }
 
-    void GravityAndJump()
+    void Gravity()
     {
         // Ground Check
         isGrounded = Physics.CheckSphere(gravitySphere.position, gravitySphereRadius, groundMask);
@@ -55,7 +59,11 @@ public class PlayerController : MonoBehaviour
         {
             gravityVector.y = -3f;
         }
+        
+    }
 
+    void Jump()
+    {
         // Jump 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {

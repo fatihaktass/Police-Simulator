@@ -37,19 +37,23 @@ public class NPC : MonoBehaviour
     void InteractNPC()
     {
         interactPlayer = Physics.CheckSphere(transform.position, 2.4f, checkingLayers);
-        if (interactPlayer && Input.GetKeyDown(KeyCode.F) && gameManager.AllowF && !Interacting)
+        if (interactPlayer && Input.GetKeyDown(KeyCode.F) && gameManager.AllowFKey && !Interacting)
         {
             agent.isStopped = true;
             Interacting = true;
             anim.SetBool("isInteracting", true);
-            gameManager.FKeyIsAllowed(false);
+            gameManager.FKeyandPlayerActions(false);
+            gameManager.OpenInteractPanel(true);
+            Cursor.lockState = CursorLockMode.None;
         }
         if (!interactPlayer && Interacting)
         {
             agent.isStopped = false;
             Interacting = false;
             anim.SetBool("isInteracting", false);
-            gameManager.FKeyIsAllowed(true);
+            gameManager.FKeyandPlayerActions(true);
+            gameManager.OpenInteractPanel(false);
+            Cursor.lockState = CursorLockMode.Locked;
         }
         if (Interacting)
         {
