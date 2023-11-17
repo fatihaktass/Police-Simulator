@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public bool AllowFKey = true; // F tuþuna basmayý kýsýtlýyor.
 
     public TextMeshProUGUI QueryTMP;
-    public GameObject InteractPanel, NpcsIdentityPanel;
+    public GameObject InteractPanel, NpcsIdentityPanel, QuestionsPanel;
     public Button identityButton, questionButton, arrestButton, releaseButton;
 
     public PlayerController playerController;
@@ -78,22 +78,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool FKeyandPlayerActions(bool active)
+    public void EnableFKeyandPlayerActions()
     {
-        if (active)
-        {
-            AllowFKey = true;
-            playerController.isAction = false; // Oyuncu hareket edebilir.
-            mouseInput.mouseActivity = false; // kamera hareketleri aktif.
-            NPCsIdentity(false); // Kimlik gözüküyor ise kapatýr.
-        }
-        if (!active)
-        {
-            AllowFKey = false;
-            playerController.isAction = true; // Oyuncu hareket edemez.
-            mouseInput.mouseActivity = true; // kamera hareketleri kapalý.
-        }
-        return AllowFKey;
+        AllowFKey = true; // F tuþuna basabilir.
+        playerController.isAction = false; // Oyuncu hareket edebilir.
+        mouseInput.mouseActivity = false; // kamera hareketleri aktif.
+        OpenNPCsIdentity(false); // Kimlik gözüküyor ise kapatýr.
+        OpenQuestionsPanel(false); // Soru panelini kapatýr.  
+    }
+
+    public void DisableFKeyandPlayerActions()
+    {
+        AllowFKey = false; // F tuþuna basamaz.
+        playerController.isAction = true; // Oyuncu hareket edemez.
+        mouseInput.mouseActivity = true; // kamera hareketleri kapalý.
     }
 
     public void OpenInteractPanel(bool isActive)
@@ -108,15 +106,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ReleaseNpc()
-    {
-        FKeyandPlayerActions(true);
-        Cursor.lockState = CursorLockMode.Locked;
-        InteractPanel.SetActive(false);
-    }
-
-    public void NPCsIdentity(bool isActive)
+    public void OpenNPCsIdentity(bool isActive)
     {
         NpcsIdentityPanel.SetActive(isActive);
+    }
+
+    public void OpenQuestionsPanel(bool isActive)
+    {
+        QuestionsPanel.SetActive(isActive);
+    }
+
+    public void ReleaseNpc()
+    {
+        EnableFKeyandPlayerActions();
+        Cursor.lockState = CursorLockMode.Locked;
+        InteractPanel.SetActive(false);
     }
 }

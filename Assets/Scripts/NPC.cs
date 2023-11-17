@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
 
 public class NPC : MonoBehaviour
 {
@@ -13,6 +10,7 @@ public class NPC : MonoBehaviour
     
     bool interactPlayer;
     bool Interacting;
+    public bool releaseNpc;
     public bool isFemale;
     
     public GameManager gameManager;
@@ -24,6 +22,7 @@ public class NPC : MonoBehaviour
         anim = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         cameraTransform = GameObject.FindWithTag("MainCamera").transform;
+
         agentDestination = gameManager.ExitPoints().transform.position;
         agent.SetDestination(agentDestination);
     }
@@ -37,21 +36,22 @@ public class NPC : MonoBehaviour
     void InteractNPC()
     {
         interactPlayer = Physics.CheckSphere(transform.position, 2.4f, checkingLayers);
-        if (interactPlayer && Input.GetKeyDown(KeyCode.F) && gameManager.AllowFKey && !Interacting)
+        if (interactPlayer && Input.GetKeyDown(KeyCode.F) && gameManager.AllowFKey && !Interacting && !releaseNpc)
         {
             agent.isStopped = true;
             Interacting = true;
             anim.SetBool("isInteracting", true);
-            gameManager.FKeyandPlayerActions(false);
+            gameManager.DisableFKeyandPlayerActions();
             gameManager.OpenInteractPanel(true);
             Cursor.lockState = CursorLockMode.None;
+
         }
         if (!interactPlayer && Interacting)
         {
             agent.isStopped = false;
             Interacting = false;
             anim.SetBool("isInteracting", false);
-            gameManager.FKeyandPlayerActions(true);
+            gameManager.EnableFKeyandPlayerActions();
             gameManager.OpenInteractPanel(false);
             Cursor.lockState = CursorLockMode.Locked;
         }
