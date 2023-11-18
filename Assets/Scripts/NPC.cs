@@ -10,20 +10,23 @@ public class NPC : MonoBehaviour
     
     bool interactPlayer;
     bool Interacting;
-    public bool releaseNpc;
+    public bool interactableButtons;
     public bool isFemale;
     
     public GameManager gameManager;
     Transform cameraTransform;
 
+    QuestionsAndAnswers questionsAndAnswers;
+
     void Start()
     {
         gameManager = FindFirstObjectByType<GameManager>();
+        questionsAndAnswers = FindFirstObjectByType<QuestionsAndAnswers>();
         anim = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         cameraTransform = GameObject.FindWithTag("MainCamera").transform;
 
-        agentDestination = gameManager.ExitPoints().transform.position;
+        agentDestination = gameManager.ExitPoints().position;
         agent.SetDestination(agentDestination);
     }
 
@@ -31,12 +34,16 @@ public class NPC : MonoBehaviour
     {
         InteractNPC();
         AnimationGenderForNPC();
+        if (interactPlayer && !interactableButtons)
+        {
+            questionsAndAnswers.QuestionsButtonsActive();
+        }
     }
 
     void InteractNPC()
     {
         interactPlayer = Physics.CheckSphere(transform.position, 2.4f, checkingLayers);
-        if (interactPlayer && Input.GetKeyDown(KeyCode.F) && gameManager.AllowFKey && !Interacting && !releaseNpc)
+        if (interactPlayer && Input.GetKeyDown(KeyCode.F) && gameManager.AllowFKey && !Interacting)
         {
             agent.isStopped = true;
             Interacting = true;
@@ -44,7 +51,7 @@ public class NPC : MonoBehaviour
             gameManager.DisableFKeyandPlayerActions();
             gameManager.OpenInteractPanel(true);
             Cursor.lockState = CursorLockMode.None;
-
+            interactableButtons = true;
         }
         if (!interactPlayer && Interacting)
         {

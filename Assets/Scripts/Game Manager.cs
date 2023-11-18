@@ -10,13 +10,15 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] npcs;
     public GameObject[] area1Spawnps, area2Spawnps; // npclerin bölgelere göre doðacaðý noktalar
-    public GameObject[] exitpoints; // npclerin gideceði noktalar
+    public Transform[] area1ExitPoints, area2ExitPoints; // npclerin gideceði noktalar
 
     public bool area1; // Hangi bölgede görev yapacaðýný sorguluyor.
     public bool AllowFKey = true; // F tuþuna basmayý kýsýtlýyor.
 
     public TextMeshProUGUI QueryTMP;
+    public Transform playerTransform;
     public GameObject InteractPanel, NpcsIdentityPanel, QuestionsPanel;
+    public GameObject area1Collider, area2Collider;
     public Button identityButton, questionButton, arrestButton, releaseButton;
 
     public PlayerController playerController;
@@ -27,6 +29,19 @@ public class GameManager : MonoBehaviour
         playerController = FindFirstObjectByType<PlayerController>();
         mouseInput = FindFirstObjectByType<MouseInput>();
         StartCoroutine(NPCSpawner());
+
+        if (area1)
+        {
+            playerTransform.position = new Vector3(-7.31151f, 0.9f, -123.5954f);
+            area1Collider.SetActive(false);
+            area2Collider.SetActive(true);
+        }
+        if (!area1)
+        {
+            playerTransform.position = new Vector3(6.6f, 0.9f, 0.85f);
+            area1Collider.SetActive(true);
+            area2Collider.SetActive(false);
+        }
     }
 
     public void AddGameScore()
@@ -57,10 +72,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public GameObject ExitPoints()
+    public Transform ExitPoints()
     {
-        int RandomExitPoints = Random.Range(0,exitpoints.Length); 
-        return exitpoints[RandomExitPoints];
+        if (area1)
+        {   // Birinci bölgede olan çýkýþ noktalarýný rastgele þekilde seçer ve geri döndürür.
+            int RandomExitPoints = Random.Range(0, area1ExitPoints.Length);
+            return area1ExitPoints[RandomExitPoints];
+        }
+        if (!area1)
+        {
+            // Ýkinci bölgede olan çýkýþ noktalarýný rastgele þekilde seçer ve geri döndürür.
+            int RandomExitPoints = Random.Range(0, area2ExitPoints.Length);
+            return area2ExitPoints[RandomExitPoints];
+        }
+        return null;
     }
 
     public void QueryText(bool isOpening)
