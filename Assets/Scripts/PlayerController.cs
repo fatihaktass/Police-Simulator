@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     {
         charController = GetComponent<CharacterController>();
         gameManager = FindFirstObjectByType<GameManager>();
+        gameManager.ListAllNPCsAdded(this.gameObject);
     }
 
     // Update is called once per frame
@@ -65,7 +66,7 @@ public class PlayerController : MonoBehaviour
     void Jump()
     {
         // Jump 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isAction)
         {
             gravityVector.y = Mathf.Sqrt(jumpForce * -2f * gravity);
         }
@@ -79,6 +80,6 @@ public class PlayerController : MonoBehaviour
     void ParentQueryText()
     {
         bool isInteracting = Physics.CheckSphere(transform.position, 2.4f, npcLayer);
-        gameManager.QueryText(isInteracting);
+        
     }
 }

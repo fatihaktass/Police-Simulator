@@ -1301,8 +1301,11 @@ MonoBehaviour:
   checkingLayers:
     serializedVersion: 2
     m_Bits: 128
+  interactableButtons: 0
   isFemale: 0
   gameManager: {fileID: 0}
+  questionsAndAnswers: {fileID: 0}
+  NpcCameraPosition: {fileID: 0}
 --- !u!136 &2451607029314647770
 CapsuleCollider:
   m_ObjectHideFlags: 0
