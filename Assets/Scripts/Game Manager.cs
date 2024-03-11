@@ -1,9 +1,7 @@
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -30,6 +28,7 @@ public class GameManager : MonoBehaviour
     public bool changingCamera; // kameralar arasý geçiþ için kullanýlýyor.
     public bool isCriminal; // eðer karakter suçlu ise true deðer döndürür.
     bool identityDelimiter; // Sýnýrlayýcýnýn deðerine göre randomIdentity ile random deðer oluþturur ve bu deðere göre kimliði açýp kapatýr.
+    bool escPanel;
     int randomIdentity;
     
 
@@ -41,6 +40,8 @@ public class GameManager : MonoBehaviour
     public RawImage FinishImage;
     public TextMeshProUGUI[] IdentityCard;
     public GameObject IdentityPanel;
+    public GameObject pausePanel; // Esc tuþuna basýnca açýlacak olan panel.
+    public GameObject settingsPanel;
     public GameObject finishPanel; // Oyun bittiðinde istatistik gösterilecek olan panel.
     public TextMeshProUGUI criminalCountText, civilianCountText, succesRateText;
 
@@ -56,10 +57,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Audio Settings")]
     public AudioSource OpeningLight;
-    public AudioSource victorySFX, loseSFX;
+    public AudioSource victorySFX;
+    public AudioSource loseSFX;
 
-    List<GameObject> ScoreObjectsList = new(); // Sadece tutuklanan npclerin eklendiði list.
-    List<GameObject> AllNPCsList = new(); // Bütün npclerin eklendiði list.
+    public List<GameObject> ScoreObjectsList = new(); // Sadece tutuklanan npclerin eklendiði list.
+    public List<GameObject> AllNPCsList = new(); // Bütün npclerin eklendiði list.
 
     void Start()
     {
@@ -127,12 +129,20 @@ public class GameManager : MonoBehaviour
             {
                 loseSFX.Play();
             }
+            lightSequence++;
         }
 
         if (exitCriminal >= 2)
         {
             Debug.Log("oyun bitti");
         }
+
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            EscPanel();
+        }
+        
     }
 
     void CameraChanger()
@@ -325,8 +335,39 @@ public class GameManager : MonoBehaviour
         succesRateText.text = (criminalCount * 100 / ScoreObjectsList.Count).ToString();
     }
 
+    public void EscPanel()
+    {
+        escPanel = !escPanel;
+        if (!escPanel)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Time.timeScale = 1f;
+            pausePanel.SetActive(false);
+            settingsPanel.SetActive(false);
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0f;
+            pausePanel.SetActive(true);
+        }
+    }
+
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void SettingsPanel(bool isOpened)
+    {
+        pausePanel.SetActive(!isOpened);
+        if (isOpened)
+        {
+            settingsPanel.SetActive(true);
+        }
+        else
+        {
+            settingsPanel.SetActive(false);
+        }
     }
 }
