@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -10,13 +9,22 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 5f;
     public bool isAction;
 
+    float horizontalMovement;
+    float verticalMovement;
+
     // Gravity
     public Transform gravitySphere;
     Vector3 gravityVector;
     public float gravity;
     public float gravitySphereRadius;
     public bool isGrounded;
-    public LayerMask groundMask,npcLayer;
+    public LayerMask groundMask, npcLayer;
+
+    // SFX
+    [SerializeField] AudioSource[] footStepsSFX;
+    int footStepsIndex = 0;
+    float footStepSpeed;
+    bool playerMoved;
 
     // Start is called before the first frame update
     void Start()
@@ -34,14 +42,15 @@ public class PlayerController : MonoBehaviour
             CharacterMovements();
             Jump();
             ParentQueryText();
+            FootStep();
         }
         Gravity();
     }
 
     void CharacterMovements()
     {
-        float horizontalMovement = Input.GetAxis("Horizontal");
-        float verticalMovement = Input.GetAxis("Vertical");
+        horizontalMovement = Input.GetAxis("Horizontal");
+        verticalMovement = Input.GetAxis("Vertical");
 
         Vector3 moveVector = (horizontalMovement * transform.right + verticalMovement * transform.forward).normalized;
         charController.Move(moveVector * playerSpeed * Time.deltaTime);
@@ -81,5 +90,41 @@ public class PlayerController : MonoBehaviour
     {
         bool isInteracting = Physics.CheckSphere(transform.position, 2.4f, npcLayer);
         
+    }
+
+    void FootStep()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            footStepSpeed = .375f;
+        }
+        else
+        {
+            footStepSpeed = .65f;
+        }
+
+        if ((horizontalMovement != 0 || verticalMovement != 0) && !playerMoved && isGrounded)
+        {
+            footStepsSFX[footStepsIndex].Play();
+            playerMoved = true;
+            Invoke(nameof(PlayerMovementBool), footStepSpeed);
+
+            footStepsIndex++;
+            if (footStepsIndex > 1)
+            {
+                footStepsIndex = 0;
+            }
+        }
+
+    }
+
+    void PlayerMovementBool()
+    {
+        playerMoved = false;
+    }
+
+    IEnumerator FootSteps()
+    {
+        yield return new WaitForSeconds(.5f);
     }
 }
