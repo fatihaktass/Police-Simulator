@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,7 +8,7 @@ public class NPC : MonoBehaviour
     public NavMeshAgent agent;
     public Animator anim;
     public LayerMask checkingLayers;
-    
+
     bool interactPlayer;
     bool Interacting;
     bool Arresting;
@@ -30,6 +31,11 @@ public class NPC : MonoBehaviour
     string[] npcSurNames;
 
     public GameObject NpcCameraPosition;
+
+    public AudioSource[] footSteps;
+    int footStepIndex = -1;
+    bool allowStepSFX = true;
+    bool stepSFX = false;
 
     void Start()
     {
@@ -73,8 +79,8 @@ public class NPC : MonoBehaviour
     void TagChanger()
     {
         int RandomPoint = Random.Range(0, 4);
-        if (RandomPoint == 0 || gameManager.npcTagChanger == 4 || gameManager.npcCounter >= 20) { isCriminal = true; }
-        if (RandomPoint >= 1 && gameManager.npcTagChanger <= 3 && gameManager.npcCounter <= 19) { isCriminal = false; }
+        if (RandomPoint <= 2 || gameManager.npcTagChanger == 4 || gameManager.npcCounter >= 20) { isCriminal = true; }
+        if (RandomPoint > 2 && gameManager.npcTagChanger <= 3 && gameManager.npcCounter <= 19) { isCriminal = false; }
         if (isCriminal) { gameObject.tag = "Criminal"; gameManager.npcTagChanger = 0; }
         if (!isCriminal) { gameObject.tag = "NPC"; gameManager.npcTagChanger++; gameManager.npcCounter++; Debug.Log(gameManager.npcCounter); }
         Debug.Log(gameManager.npcTagChanger);
@@ -101,15 +107,22 @@ public class NPC : MonoBehaviour
             gameObject.transform.LookAt(targetPosition);
             gameManager.RandomIdentityInfos(identityNumber, npcNames[RandomName], npcSurNames[RandomSurName], randomDay, randomMonth, randomYear);
         }
+
+        if (!stepSFX)
+        {
+            FootSteps();
+        }
+        
     }
 
-    
+
 
     void InteractNPC()
     {
         interactPlayer = Physics.CheckSphere(transform.position, 2.4f, checkingLayers);
         if (interactPlayer && Input.GetKeyDown(KeyCode.F) && gameManager.AllowFKeyAndInteraction && !Interacting)
         {
+            stepSFX = true;
             agent.isStopped = true;
             gameObject.transform.position = NpcCameraPosition.transform.position;
             Interacting = true;
@@ -122,6 +135,7 @@ public class NPC : MonoBehaviour
         }
         if (!interactPlayer && Interacting && !Arresting)
         {
+            stepSFX = false;
             agent.isStopped = false;
             Interacting = false;
             isTextShown = false;
@@ -129,7 +143,29 @@ public class NPC : MonoBehaviour
             gameManager.EnableFKeyandPlayerActions();
             gameManager.OpenInteractPanel(false);
         }
-        
+
+    }
+
+    void FootSteps()
+    {
+        if (allowStepSFX)
+        {
+            footStepIndex++;
+
+            if (footStepIndex > 1)
+            {
+                footStepIndex = 0;
+            }
+
+            footSteps[footStepIndex].Play();
+            allowStepSFX = false;
+            Invoke(nameof(BoolChanger), .5f);
+        }
+    }
+
+    void BoolChanger()
+    {
+        allowStepSFX = true;
     }
 
     void AnimationGenderForNPC()
@@ -185,7 +221,7 @@ public class NPC : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("ExitTriggers")) 
+        if (other.CompareTag("ExitTriggers"))
         {
             if (gameObject.CompareTag("NPC"))
             {
@@ -199,6 +235,6 @@ public class NPC : MonoBehaviour
                 gameManager.exitCriminal++;
             }
         }
-        
+
     }
 }

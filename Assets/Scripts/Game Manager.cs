@@ -29,7 +29,12 @@ public class GameManager : MonoBehaviour
     public bool isCriminal; // eðer karakter suçlu ise true deðer döndürür.
     bool identityDelimiter; // Sýnýrlayýcýnýn deðerine göre randomIdentity ile random deðer oluþturur ve bu deðere göre kimliði açýp kapatýr.
     bool escPanel;
+    bool activeEscPanel = true;
+    bool policeWhistle;
+    bool loseGame;
     int randomIdentity;
+
+    static int gameDay;
     
 
     [Header("UI Objects")]
@@ -43,6 +48,7 @@ public class GameManager : MonoBehaviour
     public GameObject pausePanel; // Esc tuþuna basýnca açýlacak olan panel.
     public GameObject settingsPanel;
     public GameObject finishPanel; // Oyun bittiðinde istatistik gösterilecek olan panel.
+    public GameObject gameOverPanel; 
     public TextMeshProUGUI criminalCountText, civilianCountText, succesRateText;
 
     [Header("Script Connections")]
@@ -59,6 +65,7 @@ public class GameManager : MonoBehaviour
     public AudioSource OpeningLight;
     public AudioSource victorySFX;
     public AudioSource loseSFX;
+    public AudioSource whistleSFX;
 
     public List<GameObject> ScoreObjectsList = new(); // Sadece tutuklanan npclerin eklendiði list.
     public List<GameObject> AllNPCsList = new(); // Bütün npclerin eklendiði list.
@@ -91,13 +98,61 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         CameraChanger();
+        Final();
+
+
+        if (Input.GetKeyDown(KeyCode.Escape) && activeEscPanel && !loseGame)
+        {
+            EscPanel();
+        }
+        
+    }
+
+    void CameraChanger()
+    {
+        if (gameScore < 5 && !loseGame)
+        {
+            changingCamera = false;
+            mainCamera.SetActive(true);
+            finishCamera.SetActive(false);
+            FinishPanelBlack.SetActive(false);
+        }
+        if (gameScore >= 5 && !changingCamera)
+        {
+            DisableFKeyandPlayerActions();
+            FinishImage.gameObject.SetActive(true);
+            FinishImage.CrossFadeAlpha(0f, 1f, true);
+            Invoke("FinishArea", 1.6f);
+
+            if (!policeWhistle)
+            {
+                policeWhistle = true;
+                whistleSFX.Play();
+            }
+        }
+        
+    }
+
+    void FinishArea()
+    {
+        whistleSFX.Stop();
+        FinishImage.gameObject.SetActive(false);
+        changingCamera = true;
+        mainCamera.SetActive(false);
+        finishCamera.SetActive(true);
+        foreach (GameObject obj in AllNPCsList) { obj.SetActive(false); }
+        foreach (GameObject obj in ScoreObjectsList) { obj.SetActive(true); }
+    }
+
+    void Final()
+    {
         if (!LightIsOpen && changingCamera && lightSequence <= 4)
         {
             if (Physics.Raycast(spotLights[lightSequence].transform.position, Vector3.down, out RaycastHit hit, 10f, LayerMask.GetMask("NPC")))
             {
                 Light lightComp = spotLights[lightSequence].GetComponent<Light>();
                 OpeningLight.Play();
-                
+
                 if (lightSequence < spotLights.Length)
                 {
                     lightSequence++;
@@ -121,6 +176,7 @@ public class GameManager : MonoBehaviour
         if (lightSequence == spotLights.Length)
         {
             FinishedGame();
+            activeEscPanel = false;
             if (criminalCount >= 4)
             {
                 victorySFX.Play();
@@ -132,45 +188,15 @@ public class GameManager : MonoBehaviour
             lightSequence++;
         }
 
-        if (exitCriminal >= 2)
+        if (exitCriminal >= 2 && !loseGame)
         {
-            Debug.Log("oyun bitti");
+            loseSFX.Play();
+            OpenInteractPanel(false);
+            gameOverPanel.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+            FinishArea();
+            loseGame = true;
         }
-
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            EscPanel();
-        }
-        
-    }
-
-    void CameraChanger()
-    {
-        if (gameScore < 5)
-        {
-            changingCamera = false;
-            mainCamera.SetActive(true);
-            finishCamera.SetActive(false);
-            FinishPanelBlack.SetActive(false);
-        }
-        if (gameScore >= 5 && !changingCamera)
-        {
-            DisableFKeyandPlayerActions();
-            FinishImage.gameObject.SetActive(true);
-            FinishImage.CrossFadeAlpha(0f, 1f, true);
-            Invoke("FinishArea", 1.6f);
-        }
-    }
-
-    void FinishArea()
-    {
-        FinishImage.gameObject.SetActive(false);
-        changingCamera = true;
-        mainCamera.SetActive(false);
-        finishCamera.SetActive(true);
-        foreach (GameObject obj in AllNPCsList) { obj.SetActive(false); }
-        foreach (GameObject obj in ScoreObjectsList) { obj.SetActive(true); }
     }
 
     void LightOpener()
@@ -180,7 +206,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator NPCSpawner()
     {
-        while (gameScore < 5 && exitCriminal < 3)
+        while (gameScore < 5 && exitCriminal < 2 && !loseGame)
         {
             if (area1) // oyuncunun görev yeri 1. bölge ise çalýþýr 
             {
@@ -259,11 +285,13 @@ public class GameManager : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             InteractPanel.SetActive(true);
+            activeEscPanel = false;
         }
         if (!isActive)
         {
             Cursor.lockState = CursorLockMode.Locked;
             InteractPanel.SetActive(false);
+            activeEscPanel = true;
         }
     }
 
@@ -323,6 +351,11 @@ public class GameManager : MonoBehaviour
         identityDelimiter = false;
         OpenNPCsIdentity(false);
         QuestionsPanel.SetActive(false);
+    }
+
+    public void GameDayUpdater()
+    {
+        gameDay++;
     }
 
     void FinishedGame()
