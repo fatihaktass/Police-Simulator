@@ -32,7 +32,9 @@ public class GameManager : MonoBehaviour
     bool activeEscPanel = true;
     bool policeWhistle;
     bool loseGame;
+    bool completedCriminals;
     int randomIdentity;
+
 
     static int gameDay;
     
@@ -55,6 +57,7 @@ public class GameManager : MonoBehaviour
     public PlayerController playerController;
     public MouseInput mouseInput;
     public QuestionsAndAnswers questAndAnswer;
+    SettingsScript settingsScript;
 
     [Header("Light Settings")]
     public GameObject[] spotLights;
@@ -66,16 +69,27 @@ public class GameManager : MonoBehaviour
     public AudioSource victorySFX;
     public AudioSource loseSFX;
     public AudioSource whistleSFX;
+    public AudioSource[] SFXs;
+    public AudioSource[] Musics;
 
     public List<GameObject> ScoreObjectsList = new(); // Sadece tutuklanan npclerin eklendiði list.
     public List<GameObject> AllNPCsList = new(); // Bütün npclerin eklendiði list.
+
+    private void Awake()
+    {
+        if (gameDay % 3 == 0)
+        {
+            area1 = !area1;
+        }
+    }
 
     void Start()
     {
         playerController = FindFirstObjectByType<PlayerController>();
         mouseInput = FindFirstObjectByType<MouseInput>();
         questAndAnswer = FindFirstObjectByType<QuestionsAndAnswers>();
-        
+        settingsScript = GetComponent<SettingsScript>();
+
         StartCoroutine(NPCSpawner());
         tpPointIndex = 0;
 
@@ -89,7 +103,7 @@ public class GameManager : MonoBehaviour
         }
         if (!area1)
         {
-            playerTransform.position = new Vector3(6.6f, 0.83f, 0.85f); // birinci bölgede oyuncunun spawn olacaðý nokta
+            playerTransform.position = new Vector3(6.6f, 0.83f, 0.85f); // ikinci bölgede oyuncunun spawn olacaðý nokta
             area1Collider.SetActive(true);
             area2Collider.SetActive(false);
         }
@@ -100,12 +114,16 @@ public class GameManager : MonoBehaviour
         CameraChanger();
         Final();
 
-
         if (Input.GetKeyDown(KeyCode.Escape) && activeEscPanel && !loseGame)
         {
             EscPanel();
         }
         
+        foreach (AudioSource sfx in SFXs)
+        {
+            sfx.volume = settingsScript.GetSFXVolume();
+        }
+
     }
 
     void CameraChanger()
@@ -119,6 +137,7 @@ public class GameManager : MonoBehaviour
         }
         if (gameScore >= 5 && !changingCamera)
         {
+            completedCriminals = true;
             DisableFKeyandPlayerActions();
             FinishImage.gameObject.SetActive(true);
             FinishImage.CrossFadeAlpha(0f, 1f, true);
@@ -188,13 +207,14 @@ public class GameManager : MonoBehaviour
             lightSequence++;
         }
 
-        if (exitCriminal >= 2 && !loseGame)
+        if (exitCriminal >= 2 && !loseGame && !completedCriminals)
         {
             loseSFX.Play();
             OpenInteractPanel(false);
             gameOverPanel.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
             FinishArea();
+            foreach (GameObject obj in ScoreObjectsList) { obj.SetActive(false); }
             loseGame = true;
         }
     }
@@ -356,6 +376,7 @@ public class GameManager : MonoBehaviour
     public void GameDayUpdater()
     {
         gameDay++;
+        Debug.Log(gameDay);
     }
 
     void FinishedGame()

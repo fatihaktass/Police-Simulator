@@ -43,7 +43,6 @@ public class SettingsScript : MonoBehaviour
         }
     }
 
-
     void Update()
     {
         MouseSensivityChanger();
@@ -68,5 +67,15 @@ public class SettingsScript : MonoBehaviour
     {
         sfxVolume = sfxSlider.value;
         PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
+    }
+
+    public float GetSFXVolume()
+    {
+        return sfxVolume;
+    }
+
+    public float GetMusicVolume()
+    {
+        return musicVolume;
     }
 }
