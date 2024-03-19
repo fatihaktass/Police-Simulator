@@ -18,8 +18,9 @@ public class GameManager : MonoBehaviour
     public Transform[] finishAreaTeleportPoints; // tutuklanan npclerin ýþýnlanacaðý noktalar
     public Transform playerTransform;
     public GameObject mainCamera, finishCamera;
+    public Transform directionalLightRot;
 
-    public bool area1; // Hangi bölgede görev yapacaðýný sorguluyor.
+    static bool area1; // Hangi bölgede görev yapacaðýný sorguluyor.
     public bool AllowFKeyAndInteraction = true; // F tuþuna basmayý kýsýtlýyor.
     public bool ArrestingNPC; // NPC tutuklanma durumunu sorgular.
     public int npcTagChanger = 0; 
@@ -75,26 +76,9 @@ public class GameManager : MonoBehaviour
     public List<GameObject> ScoreObjectsList = new(); // Sadece tutuklanan npclerin eklendiði list.
     public List<GameObject> AllNPCsList = new(); // Bütün npclerin eklendiði list.
 
+
     private void Awake()
     {
-        if (gameDay % 3 == 0)
-        {
-            area1 = !area1;
-        }
-    }
-
-    void Start()
-    {
-        playerController = FindFirstObjectByType<PlayerController>();
-        mouseInput = FindFirstObjectByType<MouseInput>();
-        questAndAnswer = FindFirstObjectByType<QuestionsAndAnswers>();
-        settingsScript = GetComponent<SettingsScript>();
-
-        StartCoroutine(NPCSpawner());
-        tpPointIndex = 0;
-
-        Cursor.lockState = CursorLockMode.Locked;
-
         if (area1)
         {
             playerTransform.position = new Vector3(-7.31151f, 0.83f, -123.5954f); // birinci bölgede oyuncunun spawn olacaðý nokta
@@ -107,6 +91,20 @@ public class GameManager : MonoBehaviour
             area1Collider.SetActive(true);
             area2Collider.SetActive(false);
         }
+    }
+
+    void Start()
+    {
+        playerController = FindFirstObjectByType<PlayerController>();
+        mouseInput = FindFirstObjectByType<MouseInput>();
+        questAndAnswer = FindFirstObjectByType<QuestionsAndAnswers>();
+        settingsScript = GetComponent<SettingsScript>();
+
+        StartCoroutine(NPCSpawner());
+        DirectionalRotChanger(false);
+        tpPointIndex = 0;
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
@@ -161,6 +159,7 @@ public class GameManager : MonoBehaviour
         finishCamera.SetActive(true);
         foreach (GameObject obj in AllNPCsList) { obj.SetActive(false); }
         foreach (GameObject obj in ScoreObjectsList) { obj.SetActive(true); }
+        DirectionalRotChanger(true);
     }
 
     void Final()
@@ -234,7 +233,7 @@ public class GameManager : MonoBehaviour
                 int randomSpawnpointsIndex = Random.Range(0, area1Spawnps.Length);
                // if (randomSpawnpointsIndex > 2)
                 Instantiate(npcs[RandomNPCIndex], area1Spawnps[randomSpawnpointsIndex].transform.position, Quaternion.identity);
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(8f);
             }
             if (!area1) // oyuncunun görev yeri 2. bölge ise çalýþýr
             {    
@@ -242,7 +241,7 @@ public class GameManager : MonoBehaviour
                 int randomSpawnpointsIndex = Random.Range(0, area2Spawnps.Length);
                // if (randomSpawnpointsIndex > 3)
                 Instantiate(npcs[RandomNPCIndex], area2Spawnps[randomSpawnpointsIndex].transform.position, Quaternion.identity);
-                yield return new WaitForSeconds(10f);
+                yield return new WaitForSeconds(8f);
             }
         }
     }
@@ -377,6 +376,21 @@ public class GameManager : MonoBehaviour
     {
         gameDay++;
         Debug.Log(gameDay);
+        if (gameDay % 3 == 0)
+        {
+            area1 = true;
+        }
+        else
+        {
+            area1 = false;
+        }
+        Debug.Log(area1);
+    }
+
+    public void GoToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+        EnableFKeyandPlayerActions();
     }
 
     void FinishedGame()
@@ -410,6 +424,18 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    void DirectionalRotChanger(bool isFinished)
+    {
+        if (isFinished)
+        {
+            directionalLightRot.rotation = Quaternion.Euler(new Vector3(-2f,-218f));
+        }
+        else
+        {
+            directionalLightRot.rotation = Quaternion.Euler(new Vector3(30f, -50f));
+        }
     }
 
     public void SettingsPanel(bool isOpened)
