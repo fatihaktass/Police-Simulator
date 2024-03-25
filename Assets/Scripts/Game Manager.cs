@@ -111,16 +111,14 @@ public class GameManager : MonoBehaviour
     {
         CameraChanger();
         Final();
+        VolumeAndSensValue();
 
         if (Input.GetKeyDown(KeyCode.Escape) && activeEscPanel && !loseGame)
         {
             EscPanel();
         }
         
-        foreach (AudioSource sfx in SFXs)
-        {
-            sfx.volume = settingsScript.GetSFXVolume();
-        }
+        
 
     }
 
@@ -233,7 +231,7 @@ public class GameManager : MonoBehaviour
                 int randomSpawnpointsIndex = Random.Range(0, area1Spawnps.Length);
                // if (randomSpawnpointsIndex > 2)
                 Instantiate(npcs[RandomNPCIndex], area1Spawnps[randomSpawnpointsIndex].transform.position, Quaternion.identity);
-                yield return new WaitForSeconds(8f);
+                yield return new WaitForSeconds(10f);
             }
             if (!area1) // oyuncunun görev yeri 2. bölge ise çalýþýr
             {    
@@ -241,7 +239,7 @@ public class GameManager : MonoBehaviour
                 int randomSpawnpointsIndex = Random.Range(0, area2Spawnps.Length);
                // if (randomSpawnpointsIndex > 3)
                 Instantiate(npcs[RandomNPCIndex], area2Spawnps[randomSpawnpointsIndex].transform.position, Quaternion.identity);
-                yield return new WaitForSeconds(8f);
+                yield return new WaitForSeconds(10f);
             }
         }
     }
@@ -261,7 +259,7 @@ public class GameManager : MonoBehaviour
     public void FinishAreaTeleportPoints(GameObject arrestedNPC)
     {
         ScoreObjectsList.Add(arrestedNPC);
-        arrestedNPC.transform.position = finishAreaTeleportPoints[tpPointIndex].position;
+        arrestedNPC.transform.position = finishAreaTeleportPoints[tpPointIndex].position + new Vector3(0f,0.1f);
         tpPointIndex++;
     }
 
@@ -434,7 +432,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            directionalLightRot.rotation = Quaternion.Euler(new Vector3(30f, -50f));
+            directionalLightRot.rotation = Quaternion.Euler(new Vector3(50f, -30f));
         }
     }
 
@@ -448,6 +446,21 @@ public class GameManager : MonoBehaviour
         else
         {
             settingsPanel.SetActive(false);
+        }
+    }
+
+    public void VolumeAndSensValue()
+    {
+        mouseInput.mouseSensivity = settingsScript.GetMouseSensValue();
+
+        foreach (AudioSource sfx in SFXs)
+        {
+            sfx.volume = settingsScript.GetSFXVolume();
+        }
+
+        foreach (AudioSource music in Musics)
+        {
+            music.volume = settingsScript.GetMusicVolume();
         }
     }
 }

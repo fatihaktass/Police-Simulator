@@ -9,7 +9,6 @@ public class SettingsScript : MonoBehaviour
 
     [SerializeField] Slider sensivitySlider, musicSlider, sfxSlider;
 
-
     void Awake()
     {
         if (PlayerPrefs.HasKey("MouseSensivity"))
@@ -53,7 +52,6 @@ public class SettingsScript : MonoBehaviour
     void MouseSensivityChanger()
     {
         sensivityValue = sensivitySlider.value;
-        FindAnyObjectByType<MouseInput>().mouseSensivity = sensivityValue;
         PlayerPrefs.SetFloat("MouseSensivity", sensivityValue);
     }
 
@@ -77,5 +75,10 @@ public class SettingsScript : MonoBehaviour
     public float GetMusicVolume()
     {
         return musicVolume;
+    }
+
+    public float GetMouseSensValue()
+    {
+        return sensivityValue;
     }
 }
