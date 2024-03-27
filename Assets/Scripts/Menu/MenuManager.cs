@@ -6,6 +6,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject settingsPanel;
     [SerializeField] GameObject statisticsPanel;
     [SerializeField] GameObject actionButtons;
+    [SerializeField] GameObject statisticsMenuNpc;
+    [SerializeField] GameObject mainMenuNPCs;
 
     bool settingsPanelIsOpened;
 
@@ -23,6 +25,9 @@ public class MenuManager : MonoBehaviour
             settingsPanel.SetActive(false);
         }
         actionButtons.SetActive(false);
+        mainMenuNPCs.SetActive(false);
+        statisticsMenuNpc.SetActive(true);
+        statisticsMenuNpc.GetComponent<StatisticsMenuNPC>().StartRot();
         statisticsPanel.SetActive(true);
     }
 
@@ -43,7 +48,9 @@ public class MenuManager : MonoBehaviour
     public void BackButton()
     {
         statisticsPanel.SetActive(false);
+        statisticsMenuNpc.SetActive(false);
         actionButtons.SetActive(true);
+        mainMenuNPCs.SetActive(true);
     }
 
     public void QuitButton()
