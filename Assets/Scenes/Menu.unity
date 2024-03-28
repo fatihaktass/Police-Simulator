@@ -419,7 +419,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &129214657
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7322,6 +7322,7 @@ GameObject:
   - component: {fileID: 1675184727}
   - component: {fileID: 1675184726}
   - component: {fileID: 1675184728}
+  - component: {fileID: 1675184729}
   m_Layer: 0
   m_Name: MenuManager
   m_TagString: Untagged
@@ -7376,6 +7377,18 @@ MonoBehaviour:
   sensivitySlider: {fileID: 1978399146}
   musicSlider: {fileID: 270666527}
   sfxSlider: {fileID: 1819913102}
+--- !u!114 &1675184729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675184725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc38c0cc5561352428e06b728b9dc4da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1680578318
 PrefabInstance:
   m_ObjectHideFlags: 0

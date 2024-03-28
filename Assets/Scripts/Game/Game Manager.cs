@@ -35,11 +35,7 @@ public class GameManager : MonoBehaviour
     bool loseGame;
     bool completedCriminals;
     int randomIdentity;
-
-
-    static int gameDay;
     
-
     [Header("UI Objects")]
     public TextMeshProUGUI QueryTMP;
     public GameObject InteractPanel, NpcsIdentityPanel, QuestionsPanel, FinishPanelBlack;
@@ -59,6 +55,7 @@ public class GameManager : MonoBehaviour
     public MouseInput mouseInput;
     public QuestionsAndAnswers questAndAnswer;
     SettingsScript settingsScript;
+    GameStatistics gameStatistics;
 
     [Header("Light Settings")]
     public GameObject[] spotLights;
@@ -99,6 +96,7 @@ public class GameManager : MonoBehaviour
         mouseInput = FindFirstObjectByType<MouseInput>();
         questAndAnswer = FindFirstObjectByType<QuestionsAndAnswers>();
         settingsScript = GetComponent<SettingsScript>();
+        gameStatistics = GetComponent<GameStatistics>();
 
         StartCoroutine(NPCSpawner());
         DirectionalRotChanger(false);
@@ -117,9 +115,6 @@ public class GameManager : MonoBehaviour
         {
             EscPanel();
         }
-        
-        
-
     }
 
     void CameraChanger()
@@ -370,21 +365,6 @@ public class GameManager : MonoBehaviour
         QuestionsPanel.SetActive(false);
     }
 
-    public void GameDayUpdater()
-    {
-        gameDay++;
-        Debug.Log(gameDay);
-        if (gameDay % 3 == 0)
-        {
-            area1 = true;
-        }
-        else
-        {
-            area1 = false;
-        }
-        Debug.Log(area1);
-    }
-
     public void GoToMenu()
     {
         SceneManager.LoadScene("Menu");
@@ -461,6 +441,22 @@ public class GameManager : MonoBehaviour
         foreach (AudioSource music in Musics)
         {
             music.volume = settingsScript.GetMusicVolume();
+        }
+    }
+
+    public void Statistics()
+    {
+        if(criminalCount == 5)
+        {
+            gameStatistics.StatisticsSystem(true, true);
+        }
+        else if (criminalCount == 4)
+        {
+            gameStatistics.StatisticsSystem(true, false);
+        }
+        else
+        {
+            gameStatistics.StatisticsSystem(false, false);
         }
     }
 }
