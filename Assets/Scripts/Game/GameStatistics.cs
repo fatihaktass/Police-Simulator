@@ -74,17 +74,17 @@ public class GameStatistics : MonoBehaviour
 
     public void SetMapIndex(int _mapIndex)
     {
-        if (_DayCount >= 9)
-        {
+        
             _Maps = _mapIndex;
             PlayerPrefs.SetInt("Maps", _Maps);
-        }
+        
     }
 
     public int GetDayCount()
     {
        return PlayerPrefs.GetInt("DayCount");
     }
+
     public int GetSuccessDayCount()
     {
         return PlayerPrefs.GetInt("SuccessDayCount");

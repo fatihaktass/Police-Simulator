@@ -76,18 +76,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (area1)
-        {
-            playerTransform.position = new Vector3(-7.31151f, 0.83f, -123.5954f); // birinci bölgede oyuncunun spawn olacaðý nokta
-            area1Collider.SetActive(false);
-            area2Collider.SetActive(true);
-        }
-        if (!area1)
-        {
-            playerTransform.position = new Vector3(6.6f, 0.83f, 0.85f); // ikinci bölgede oyuncunun spawn olacaðý nokta
-            area1Collider.SetActive(true);
-            area2Collider.SetActive(false);
-        }
+        
     }
 
     void Start()
@@ -101,6 +90,23 @@ public class GameManager : MonoBehaviour
         StartCoroutine(NPCSpawner());
         DirectionalRotChanger(false);
         tpPointIndex = 0;
+
+        
+
+        if (gameStatistics.GetMapIndex() == 0)
+        {
+            playerTransform.position = new Vector3(-7.31151f, 0.83f, -123.5954f); // birinci bölgede oyuncunun spawn olacaðý nokta
+            area1Collider.SetActive(false);
+            area2Collider.SetActive(true);
+            Debug.Log("1. Bölge");
+        }
+        if (gameStatistics.GetMapIndex() == 1)
+        {
+            playerTransform.position = new Vector3(6.6f, 0.83f, 0.85f); // ikinci bölgede oyuncunun spawn olacaðý nokta
+            area1Collider.SetActive(true);
+            area2Collider.SetActive(false);
+            Debug.Log("2. Bölge");
+        }
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -220,7 +226,7 @@ public class GameManager : MonoBehaviour
     {
         while (gameScore < 5 && exitCriminal < 2 && !loseGame)
         {
-            if (area1) // oyuncunun görev yeri 1. bölge ise çalýþýr 
+            if (gameStatistics.GetMapIndex() == 0) // oyuncunun görev yeri 1. bölge ise çalýþýr 
             {
                 int RandomNPCIndex = Random.Range(0, npcs.Length);
                 int randomSpawnpointsIndex = Random.Range(0, area1Spawnps.Length);
@@ -228,7 +234,7 @@ public class GameManager : MonoBehaviour
                 Instantiate(npcs[RandomNPCIndex], area1Spawnps[randomSpawnpointsIndex].transform.position, Quaternion.identity);
                 yield return new WaitForSeconds(10f);
             }
-            if (!area1) // oyuncunun görev yeri 2. bölge ise çalýþýr
+            if (gameStatistics.GetMapIndex() == 1) // oyuncunun görev yeri 2. bölge ise çalýþýr
             {    
                 int RandomNPCIndex = Random.Range(0, npcs.Length);
                 int randomSpawnpointsIndex = Random.Range(0, area2Spawnps.Length);

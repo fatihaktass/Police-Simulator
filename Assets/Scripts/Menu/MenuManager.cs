@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
@@ -11,9 +12,11 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject mainMenuNpcs;
     [SerializeField] GameObject Area1Map, Area2Map;
     [SerializeField] GameObject rankboard;
+    [SerializeField] Slider rankboardSlider;
 
     bool settingsPanelIsOpened;
     bool rankboardIsOpened;
+    static bool mapChangePerm;
 
     GameStatistics gameStatistics;
 
@@ -21,6 +24,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI dayCountText;
     [SerializeField] TextMeshProUGUI successDayCountText;
     [SerializeField] TextMeshProUGUI rankPointsText;
+    [SerializeField] TextMeshProUGUI playerRankText;
 
     private void Start()
     {
@@ -77,12 +81,20 @@ public class MenuManager : MonoBehaviour
     {
         dayCountText.text = gameStatistics.GetDayCount().ToString();
         successDayCountText.text = gameStatistics.GetSuccessDayCount().ToString();
-        rankPointsText.text = "Rütbe Puaný: " + gameStatistics.GetRankPoints().ToString();
+        rankPointsText.text = "Rütbe Puaný: " + gameStatistics.GetRankPoints().ToString("N1");
+        rankboardSlider.value = gameStatistics.GetRankPoints();
+
+        if (gameStatistics.GetMapIndex() == 0)
+            MapChanger(false);
+        else
+            MapChanger(true);
+
+        Ranks();
     }
 
     public void MapChanger(bool isPositive)
     {
-        if (isPositive)
+        if (isPositive && mapChangePerm)
         {
             Area1Map.SetActive(false); 
             Area2Map.SetActive(true);
@@ -93,6 +105,31 @@ public class MenuManager : MonoBehaviour
             Area2Map.SetActive(false);
             Area1Map.SetActive(true);
             gameStatistics.SetMapIndex(0);
+        }
+    }
+
+    void Ranks()
+    {
+        if (gameStatistics.GetRankPoints() < 2000)
+        {
+            playerRankText.text = "Memur";
+        }
+        else if (gameStatistics.GetRankPoints() >= 2000 && gameStatistics.GetRankPoints() < 4250)
+        {
+            mapChangePerm = true;
+            playerRankText.text = "K. Memur";
+        }
+        else if (gameStatistics.GetRankPoints() >= 4250 && gameStatistics.GetRankPoints() < 6200)
+        {
+            playerRankText.text = "Komiser";
+        }
+        else if (gameStatistics.GetRankPoints() >= 6200 && gameStatistics.GetRankPoints() < 10000)
+        {
+            playerRankText.text = "B.Komiser";
+        }
+        else if (gameStatistics.GetRankPoints() >= 10000)
+        {
+            playerRankText.text = "Emniyet Müdürü";
         }
     }
 
