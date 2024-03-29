@@ -95,5 +95,5 @@ public class StatisticsMenuNPC : MonoBehaviour
         transform.position = startPosition;
         transform.rotation = Quaternion.Euler(0f,180f,0f);
     }
-   
+
 }

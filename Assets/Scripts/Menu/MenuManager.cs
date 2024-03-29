@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,10 +8,22 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject statisticsPanel;
     [SerializeField] GameObject actionButtons;
     [SerializeField] GameObject statisticsMenuNpc;
-    [SerializeField] GameObject mainMenuNPCs;
+    [SerializeField] GameObject mainMenuNpcs;
+    [SerializeField] GameObject Area1Map, Area2Map;
 
     bool settingsPanelIsOpened;
 
+    GameStatistics gameStatistics;
+
+    [Header("Statistics Objects")]
+    [SerializeField] TextMeshProUGUI dayCountText;
+    [SerializeField] TextMeshProUGUI successDayCountText;
+    [SerializeField] TextMeshProUGUI rankPointsText;
+
+    private void Start()
+    {
+        gameStatistics = GetComponent<GameStatistics>();
+    }
 
     public void PlayButton()
     {
@@ -25,7 +38,7 @@ public class MenuManager : MonoBehaviour
             settingsPanel.SetActive(false);
         }
         actionButtons.SetActive(false);
-        mainMenuNPCs.SetActive(false);
+        mainMenuNpcs.SetActive(false);
         statisticsMenuNpc.SetActive(true);
         statisticsMenuNpc.GetComponent<StatisticsMenuNPC>().StartRot();
         statisticsPanel.SetActive(true);
@@ -50,7 +63,7 @@ public class MenuManager : MonoBehaviour
         statisticsPanel.SetActive(false);
         statisticsMenuNpc.SetActive(false);
         actionButtons.SetActive(true);
-        mainMenuNPCs.SetActive(true);
+        mainMenuNpcs.SetActive(true);
     }
 
     public void QuitButton()
@@ -58,5 +71,26 @@ public class MenuManager : MonoBehaviour
         Application.Quit();
     }
 
+    public void GetAllStatistic()
+    {
+        dayCountText.text = gameStatistics.GetDayCount().ToString();
+        successDayCountText.text = gameStatistics.GetSuccessDayCount().ToString();
+        rankPointsText.text = "Rütbe Puaný: " + gameStatistics.GetRankPoints().ToString();
+    }
 
+    public void MapChanger(bool isPositive)
+    {
+        if (isPositive)
+        {
+            Area1Map.SetActive(false); 
+            Area2Map.SetActive(true);
+            gameStatistics.SetMapIndex(1);
+        }
+        else
+        {
+            Area2Map.SetActive(false);
+            Area1Map.SetActive(true);
+            gameStatistics.SetMapIndex(0);
+        }
+    }
 }
