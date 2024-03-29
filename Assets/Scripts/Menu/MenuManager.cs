@@ -10,8 +10,10 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject statisticsMenuNpc;
     [SerializeField] GameObject mainMenuNpcs;
     [SerializeField] GameObject Area1Map, Area2Map;
+    [SerializeField] GameObject rankboard;
 
     bool settingsPanelIsOpened;
+    bool rankboardIsOpened;
 
     GameStatistics gameStatistics;
 
@@ -92,5 +94,15 @@ public class MenuManager : MonoBehaviour
             Area1Map.SetActive(true);
             gameStatistics.SetMapIndex(0);
         }
+    }
+
+    public void Rankboard()
+    {
+        rankboardIsOpened = !rankboardIsOpened;
+
+        if (rankboardIsOpened)
+            rankboard.SetActive(true);
+        else
+            rankboard.SetActive(false);
     }
 }
