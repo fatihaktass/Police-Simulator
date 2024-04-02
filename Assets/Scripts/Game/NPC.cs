@@ -226,13 +226,12 @@ public class NPC : MonoBehaviour
             if (gameObject.CompareTag("NPC"))
             {
                 gameObject.SetActive(false);
-                Debug.Log("npc öldü");
             }
             if (gameObject.CompareTag("Criminal"))
             {
                 gameObject.SetActive(false);
-                Debug.Log("suclu öldü");
                 gameManager.exitCriminal++;
+                gameManager.escapedInfoText.text = gameManager.exitCriminal.ToString();
             }
         }
 

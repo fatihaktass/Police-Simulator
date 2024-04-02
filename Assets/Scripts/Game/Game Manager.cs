@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
     public GameObject finishPanel; // Oyun bittiðinde istatistik gösterilecek olan panel.
     public GameObject gameOverPanel; 
     public TextMeshProUGUI criminalCountText, civilianCountText, succesRateText;
+    public TextMeshProUGUI arrestedInfoText, escapedInfoText;
 
     [Header("Script Connections")]
     public PlayerController playerController;
@@ -72,12 +73,6 @@ public class GameManager : MonoBehaviour
 
     public List<GameObject> ScoreObjectsList = new(); // Sadece tutuklanan npclerin eklendiði list.
     public List<GameObject> AllNPCsList = new(); // Bütün npclerin eklendiði list.
-
-
-    private void Awake()
-    {
-        
-    }
 
     void Start()
     {
@@ -359,6 +354,7 @@ public class GameManager : MonoBehaviour
         identityDelimiter = false;
         OpenNPCsIdentity(false);
         QuestionsPanel.SetActive(false);
+        arrestedInfoText.text = gameScore.ToString();
     }
 
     public void ReleaseNpc()
