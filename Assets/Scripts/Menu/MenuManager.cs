@@ -25,10 +25,13 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI successDayCountText;
     [SerializeField] TextMeshProUGUI rankPointsText;
     [SerializeField] TextMeshProUGUI playerRankText;
+    [SerializeField] TextMeshProUGUI reminderText;
 
     private void Start()
     {
         gameStatistics = GetComponent<GameStatistics>();
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void PlayButton()
@@ -94,11 +97,22 @@ public class MenuManager : MonoBehaviour
 
     public void MapChanger(bool isPositive)
     {
-        if (isPositive && mapChangePerm)
+        if (isPositive)
         {
-            Area1Map.SetActive(false); 
-            Area2Map.SetActive(true);
-            gameStatistics.SetMapIndex(1);
+            if (mapChangePerm)
+            {
+                Area1Map.SetActive(false);
+                Area2Map.SetActive(true);
+                gameStatistics.SetMapIndex(1);
+            }
+            else
+            {
+                reminderText.alpha = 255f;
+                reminderText.text = "Yeni görev yeri için en az Kýdemli Memur rütbesinde olmalýsýnýz.";
+                reminderText.CrossFadeAlpha(1f, 0f, false);
+                reminderText.CrossFadeAlpha(0f, 1f, false);
+            }
+            
         }
         else
         {

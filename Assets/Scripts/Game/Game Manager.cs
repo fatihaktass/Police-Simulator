@@ -373,8 +373,8 @@ public class GameManager : MonoBehaviour
 
     public void GoToMenu()
     {
+        escPanel = false;
         SceneManager.LoadScene("Menu");
-        EnableFKeyandPlayerActions();
     }
 
     void FinishedGame()
