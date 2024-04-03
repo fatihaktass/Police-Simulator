@@ -12,10 +12,17 @@ public class MouseInput : MonoBehaviour
     float fieldOfViewSpeed = 24f;
     public bool mouseActivity;
 
+    public PlayerAnimations playerAnims;
+
     void Awake()
     {
-        Cursor.lockState = CursorLockMode.Locked;   
+        Cursor.lockState = CursorLockMode.Locked;
         cam = GetComponent<Camera>();
+    }
+
+    private void Start()
+    {
+        playerAnims = FindAnyObjectByType<PlayerAnimations>();
     }
 
     private void Update()
@@ -42,7 +49,8 @@ public class MouseInput : MonoBehaviour
 
     private void CamFieldOfView() // Koþarken-yürürken kamera görüþ açýsýný geniþletip daraltmaya yarar.
     {
-        cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - (Input.GetKey(KeyCode.LeftShift) ? -1 : 1) * fieldOfViewSpeed * Time.deltaTime, 66f, 72f);
+        if (!playerAnims.playerCantRun)
+            cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - (Input.GetKey(KeyCode.LeftShift) ? -1 : 1) * fieldOfViewSpeed * Time.deltaTime, 66f, 72f);
     }
 
 }

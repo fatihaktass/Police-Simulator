@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public CharacterController charController;
     public GameManager gameManager;
+    PlayerAnimations playerAnim;
     public float playerSpeed = 5f;
     public float jumpForce = 5f;
     public bool isAction;
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         charController = GetComponent<CharacterController>();
+        playerAnim = GetComponentInChildren<PlayerAnimations>();
         gameManager = FindFirstObjectByType<GameManager>();
         gameManager.ListAllNPCsAdded(this.gameObject);
     }
@@ -92,7 +94,7 @@ public class PlayerController : MonoBehaviour
 
     void FootStep()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && !playerAnim.playerCantRun)
         {
             footStepSpeed = .375f;
         }

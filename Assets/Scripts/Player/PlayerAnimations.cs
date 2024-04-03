@@ -12,7 +12,7 @@ public class PlayerAnimations : MonoBehaviour
     float increaseInterval = 20f;
     float increaseAmount = 1f;
     bool isPlayerRunning = false;
-    bool playerCantRun = false;
+    public bool playerCantRun = false;
     [SerializeField] Slider energySlider;
 
     void Start()
@@ -43,7 +43,7 @@ public class PlayerAnimations : MonoBehaviour
             playerController.playerSpeed = 6f;
             animator.SetBool("isRunning", true);
             isPlayerRunning = true;
-            currentValue = Mathf.MoveTowards(currentValue, 0f, increaseAmount * Time.deltaTime);
+            currentValue = Mathf.MoveTowards(currentValue, -increaseInterval, increaseAmount * Time.deltaTime);
             energySlider.value = currentValue;
         }
         else
