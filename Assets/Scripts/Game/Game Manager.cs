@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     public GameObject mainCamera, finishCamera;
     public Transform directionalLightRot;
 
-    static bool area1; // Hangi bölgede görev yapacaðýný sorguluyor.
     public bool AllowFKeyAndInteraction = true; // F tuþuna basmayý kýsýtlýyor.
     public bool ArrestingNPC; // NPC tutuklanma durumunu sorgular.
     public int npcTagChanger = 0; 
@@ -34,6 +33,7 @@ public class GameManager : MonoBehaviour
     bool policeWhistle;
     bool loseGame;
     bool completedCriminals;
+    bool playerCanArrest;
     int randomIdentity;
     
     [Header("UI Objects")]
@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverPanel; 
     public TextMeshProUGUI criminalCountText, civilianCountText, succesRateText;
     public TextMeshProUGUI arrestedInfoText, escapedInfoText;
+    public GameObject gameInfos;
 
     [Header("Script Connections")]
     public PlayerController playerController;
@@ -139,6 +140,7 @@ public class GameManager : MonoBehaviour
             {
                 policeWhistle = true;
                 whistleSFX.Play();
+                gameInfos.SetActive(false);
             }
         }
         
@@ -290,6 +292,7 @@ public class GameManager : MonoBehaviour
         AllowFKeyAndInteraction = false; // F tuþuna basamaz.
         playerController.isAction = true; // Oyuncu hareket edemez.
         mouseInput.mouseActivity = true; // kamera hareketleri kapalý.
+        playerCanArrest = false;
     }
 
     public void OpenInteractPanel(bool isActive)
@@ -318,11 +321,11 @@ public class GameManager : MonoBehaviour
 
     public void OpenNPCsIdentity(bool isActive)
     {
+        playerCanArrest = true;
         if (!identityDelimiter)
         {
             randomIdentity = Random.Range(0, 4);
             identityDelimiter = true;
-            Debug.LogError("false: " + randomIdentity);
         }
 
         if (randomIdentity >= 2)
@@ -345,16 +348,22 @@ public class GameManager : MonoBehaviour
     {
         QuestionsPanel.SetActive(isActive);
         questAndAnswer.IsOpening(true);
+        playerCanArrest = true;
     }
 
     public void ArrestNPC()
     {
-        gameScore++;
-        ArrestingNPC = true;
-        identityDelimiter = false;
-        OpenNPCsIdentity(false);
-        QuestionsPanel.SetActive(false);
-        arrestedInfoText.text = gameScore.ToString();
+        if (playerCanArrest)
+        {
+            gameScore++;
+            ArrestingNPC = true;
+            identityDelimiter = false;
+            OpenNPCsIdentity(false);
+            QuestionsPanel.SetActive(false);
+            arrestedInfoText.text = gameScore.ToString();
+            playerCanArrest = false;
+        }
+        
     }
 
     public void ReleaseNpc()
