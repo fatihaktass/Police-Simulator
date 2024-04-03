@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,7 +27,6 @@ public class PlayerController : MonoBehaviour
     float footStepSpeed;
     bool playerMoved;
 
-    // Start is called before the first frame update
     void Start()
     {
         charController = GetComponent<CharacterController>();
@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
         gameManager.ListAllNPCsAdded(this.gameObject);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!isAction)
@@ -89,7 +88,6 @@ public class PlayerController : MonoBehaviour
     void ParentQueryText()
     {
         bool isInteracting = Physics.CheckSphere(transform.position, 2.4f, npcLayer);
-        
     }
 
     void FootStep()
@@ -121,10 +119,5 @@ public class PlayerController : MonoBehaviour
     void PlayerMovementBool()
     {
         playerMoved = false;
-    }
-
-    IEnumerator FootSteps()
-    {
-        yield return new WaitForSeconds(.5f);
     }
 }
