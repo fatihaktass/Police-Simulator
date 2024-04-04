@@ -79,8 +79,8 @@ public class NPC : MonoBehaviour
     void TagChanger()
     {
         int RandomPoint = Random.Range(0, 4);
-        if (RandomPoint <= 2 || gameManager.npcTagChanger == 4 || gameManager.npcCounter >= 20) { isCriminal = true; }
-        if (RandomPoint > 2 && gameManager.npcTagChanger <= 3 && gameManager.npcCounter <= 19) { isCriminal = false; }
+        if (RandomPoint <= 1 || gameManager.npcTagChanger == 4 || gameManager.npcCounter >= 20) { isCriminal = true; }
+        if (RandomPoint > 1 && gameManager.npcTagChanger <= 3 && gameManager.npcCounter <= 19) { isCriminal = false; }
         if (isCriminal) { gameObject.tag = "Criminal"; gameManager.npcTagChanger = 0; }
         if (!isCriminal) { gameObject.tag = "NPC"; gameManager.npcTagChanger++; gameManager.npcCounter++; Debug.Log(gameManager.npcCounter); }
         Debug.Log(gameManager.npcTagChanger);

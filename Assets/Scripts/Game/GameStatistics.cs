@@ -62,6 +62,8 @@ public class GameStatistics : MonoBehaviour
             _RankPoints -= Random.Range(10f, 40f);
         }
 
+        if (_RankPoints <= 0)
+            _RankPoints = 0;
 
         PlayerPrefs.SetFloat("RankPoints", _RankPoints);
         PlayerPrefs.SetInt("DayCount", _DayCount);
@@ -74,15 +76,13 @@ public class GameStatistics : MonoBehaviour
 
     public void SetMapIndex(int _mapIndex)
     {
-        
-            _Maps = _mapIndex;
-            PlayerPrefs.SetInt("Maps", _Maps);
-        
+        _Maps = _mapIndex;
+        PlayerPrefs.SetInt("Maps", _Maps);
     }
 
     public int GetDayCount()
     {
-       return PlayerPrefs.GetInt("DayCount");
+        return PlayerPrefs.GetInt("DayCount");
     }
 
     public int GetSuccessDayCount()

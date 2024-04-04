@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI criminalCountText, civilianCountText, succesRateText;
     public TextMeshProUGUI arrestedInfoText, escapedInfoText;
     public GameObject gameInfos;
+    public GameObject warningPanel;
 
     [Header("Script Connections")]
     public PlayerController playerController;
@@ -379,6 +380,22 @@ public class GameManager : MonoBehaviour
     public void GoToMenu()
     {
         escPanel = false;
+
+        if(criminalCount >= 4)
+        {
+            Statistics();
+            SceneManager.LoadScene("Menu");
+        }
+        else
+        {
+            WarningPanel(true);
+        }
+        
+    }
+
+    public void GoDirectMenu()
+    {
+        Statistics();
         SceneManager.LoadScene("Menu");
     }
 
@@ -468,6 +485,19 @@ public class GameManager : MonoBehaviour
         else
         {
             gameStatistics.StatisticsSystem(false, false);
+        }
+    }
+
+    public void WarningPanel(bool isOpened)
+    {
+        if (isOpened)
+        {
+            warningPanel.SetActive(true);
+            finishPanel.SetActive(false);
+        }
+        else 
+        {
+            warningPanel.SetActive(false); 
         }
     }
 }
