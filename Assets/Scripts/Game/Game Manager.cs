@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     public bool AllowFKeyAndInteraction = true; // F tuþuna basmayý kýsýtlýyor.
     public bool ArrestingNPC; // NPC tutuklanma durumunu sorgular.
-    public int npcTagChanger = 0; 
+    public int npcTagChanger = 0;
     public int npcCounter = 0; // Spawn olan npc'leri sayar.
     public int exitCriminal = 0; // Kaçan suçlularý sayar.
     public bool changingCamera; // kameralar arasý geçiþ için kullanýlýyor.
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     bool completedCriminals;
     bool playerCanArrest;
     int randomIdentity;
-    
+
     [Header("UI Objects")]
     public TextMeshProUGUI QueryTMP;
     public GameObject InteractPanel, NpcsIdentityPanel, QuestionsPanel, FinishPanelBlack;
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     public GameObject pausePanel; // Esc tuþuna basýnca açýlacak olan panel.
     public GameObject settingsPanel;
     public GameObject finishPanel; // Oyun bittiðinde istatistik gösterilecek olan panel.
-    public GameObject gameOverPanel; 
+    public GameObject gameOverPanel;
     public TextMeshProUGUI criminalCountText, civilianCountText, succesRateText;
     public TextMeshProUGUI arrestedInfoText, escapedInfoText;
     public GameObject gameInfos;
@@ -87,8 +87,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(NPCSpawner());
         DirectionalRotChanger(false);
         tpPointIndex = 0;
-
-        
 
         if (gameStatistics.GetMapIndex() == 0)
         {
@@ -144,7 +142,7 @@ public class GameManager : MonoBehaviour
                 gameInfos.SetActive(false);
             }
         }
-        
+
     }
 
     void FinishArea()
@@ -228,15 +226,15 @@ public class GameManager : MonoBehaviour
             {
                 int RandomNPCIndex = Random.Range(0, npcs.Length);
                 int randomSpawnpointsIndex = Random.Range(0, area1Spawnps.Length);
-               // if (randomSpawnpointsIndex > 2)
+                // if (randomSpawnpointsIndex > 2)
                 Instantiate(npcs[RandomNPCIndex], area1Spawnps[randomSpawnpointsIndex].transform.position, Quaternion.identity);
                 yield return new WaitForSeconds(10f);
             }
             if (gameStatistics.GetMapIndex() == 1) // oyuncunun görev yeri 2. bölge ise çalýþýr
-            {    
+            {
                 int RandomNPCIndex = Random.Range(0, npcs.Length);
                 int randomSpawnpointsIndex = Random.Range(0, area2Spawnps.Length);
-               // if (randomSpawnpointsIndex > 3)
+                // if (randomSpawnpointsIndex > 3)
                 Instantiate(npcs[RandomNPCIndex], area2Spawnps[randomSpawnpointsIndex].transform.position, Quaternion.identity);
                 yield return new WaitForSeconds(10f);
             }
@@ -245,9 +243,9 @@ public class GameManager : MonoBehaviour
 
     public Transform ExitPoints()
     {
-          // Çýkýþ noktalarýný rastgele þekilde seçer ve geri döndürür.
-          int RandomExitPoints = Random.Range(0, exitPoints.Length);
-          return exitPoints[RandomExitPoints];
+        // Çýkýþ noktalarýný rastgele þekilde seçer ve geri döndürür.
+        int RandomExitPoints = Random.Range(0, exitPoints.Length);
+        return exitPoints[RandomExitPoints];
     }
 
     public void ListAllNPCsAdded(GameObject allNPC)
@@ -258,7 +256,7 @@ public class GameManager : MonoBehaviour
     public void FinishAreaTeleportPoints(GameObject arrestedNPC)
     {
         ScoreObjectsList.Add(arrestedNPC);
-        arrestedNPC.transform.position = finishAreaTeleportPoints[tpPointIndex].position + new Vector3(0f,0.1f);
+        arrestedNPC.transform.position = finishAreaTeleportPoints[tpPointIndex].position + new Vector3(0f, 0.1f);
         tpPointIndex++;
     }
 
@@ -364,7 +362,7 @@ public class GameManager : MonoBehaviour
             arrestedInfoText.text = gameScore.ToString();
             playerCanArrest = false;
         }
-        
+
     }
 
     public void ReleaseNpc()
@@ -381,7 +379,7 @@ public class GameManager : MonoBehaviour
     {
         escPanel = false;
 
-        if(criminalCount >= 4)
+        if (criminalCount >= 4)
         {
             Statistics();
             SceneManager.LoadScene("Menu");
@@ -390,7 +388,7 @@ public class GameManager : MonoBehaviour
         {
             WarningPanel(true);
         }
-        
+
     }
 
     public void GoDirectMenu()
@@ -436,7 +434,7 @@ public class GameManager : MonoBehaviour
     {
         if (isFinished)
         {
-            directionalLightRot.rotation = Quaternion.Euler(new Vector3(-2f,-218f));
+            directionalLightRot.rotation = Quaternion.Euler(new Vector3(-2f, -218f));
         }
         else
         {
@@ -474,7 +472,7 @@ public class GameManager : MonoBehaviour
 
     public void Statistics()
     {
-        if(criminalCount == 5)
+        if (criminalCount == 5)
         {
             gameStatistics.StatisticsSystem(true, true);
         }
@@ -494,10 +492,11 @@ public class GameManager : MonoBehaviour
         {
             warningPanel.SetActive(true);
             finishPanel.SetActive(false);
+            gameOverPanel.SetActive(false);
         }
-        else 
+        else
         {
-            warningPanel.SetActive(false); 
+            warningPanel.SetActive(false);
         }
     }
 }
