@@ -154,7 +154,11 @@ public class MenuManager : MonoBehaviour
         rankboardIsOpened = !rankboardIsOpened;
 
         if (rankboardIsOpened)
+        {
+            infoButtonPressed = false;
+            infoPanel.SetActive(false);
             rankboard.SetActive(true);
+        }
         else
             rankboard.SetActive(false);
     }
@@ -164,8 +168,13 @@ public class MenuManager : MonoBehaviour
         infoButtonPressed = !infoButtonPressed;
 
         if (infoButtonPressed)
+        {
+            rankboardIsOpened = false;
+            rankboard.SetActive(false);
             infoPanel.SetActive(true);
-        else
+        }
+            
+        else 
             infoPanel.SetActive(false);
     }
 }
