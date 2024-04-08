@@ -12,9 +12,11 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject mainMenuNpcs;
     [SerializeField] GameObject Area1Map, Area2Map;
     [SerializeField] GameObject rankboard;
+    [SerializeField] GameObject infoPanel;
     [SerializeField] Slider rankboardSlider;
 
     bool settingsPanelIsOpened;
+    bool infoButtonPressed;
     bool rankboardIsOpened;
     static bool mapChangePerm;
 
@@ -155,5 +157,15 @@ public class MenuManager : MonoBehaviour
             rankboard.SetActive(true);
         else
             rankboard.SetActive(false);
+    }
+    
+    public void InfoButton()
+    {
+        infoButtonPressed = !infoButtonPressed;
+
+        if (infoButtonPressed)
+            infoPanel.SetActive(true);
+        else
+            infoPanel.SetActive(false);
     }
 }
