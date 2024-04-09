@@ -40,7 +40,6 @@ public class StatisticsMenuNPC : MonoBehaviour
         
     }
 
-
     IEnumerator ChangeRotation()
     {
         while (workPermit)

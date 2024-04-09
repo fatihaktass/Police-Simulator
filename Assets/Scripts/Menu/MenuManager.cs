@@ -13,11 +13,14 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject Area1Map, Area2Map;
     [SerializeField] GameObject rankboard;
     [SerializeField] GameObject infoPanel;
+    [SerializeField] AudioSource[] policeSiren;
+    [SerializeField] TextMeshProUGUI sirenButtonText;
     [SerializeField] Slider rankboardSlider;
 
     bool settingsPanelIsOpened;
     bool infoButtonPressed;
     bool rankboardIsOpened;
+    bool sirensIsMuted;
     static bool mapChangePerm;
 
     GameStatistics gameStatistics;
@@ -176,5 +179,21 @@ public class MenuManager : MonoBehaviour
             
         else 
             infoPanel.SetActive(false);
+    }
+
+    public void SirenVoice()
+    {
+        sirensIsMuted = !sirensIsMuted;
+
+        if (sirensIsMuted)
+        {
+            foreach (AudioSource siren in policeSiren) { siren.mute = true; }
+            sirenButtonText.text = "SESÝ AÇ";
+        }  
+        else
+        {
+            foreach (AudioSource siren in policeSiren) { siren.mute = false; }
+            sirenButtonText.text = "SUSTUR  ";
+        }   
     }
 }
