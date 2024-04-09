@@ -24,6 +24,7 @@ public class MenuManager : MonoBehaviour
     static bool mapChangePerm;
 
     GameStatistics gameStatistics;
+    Animator rankboardAnim;
 
     [Header("Statistics Objects")]
     [SerializeField] TextMeshProUGUI dayCountText;
@@ -35,6 +36,7 @@ public class MenuManager : MonoBehaviour
     private void Start()
     {
         gameStatistics = GetComponent<GameStatistics>();
+        rankboardAnim = rankboard.GetComponent<Animator>();
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.None;
     }
@@ -160,10 +162,10 @@ public class MenuManager : MonoBehaviour
         {
             infoButtonPressed = false;
             infoPanel.SetActive(false);
-            rankboard.SetActive(true);
+            rankboardAnim.SetBool("Rankboard", true);
         }
         else
-            rankboard.SetActive(false);
+            rankboardAnim.SetBool("Rankboard", false);
     }
     
     public void InfoButton()
