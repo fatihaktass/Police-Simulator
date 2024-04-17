@@ -14,6 +14,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject rankboard;
     [SerializeField] GameObject infoPanel;
     [SerializeField] AudioSource[] policeSiren;
+    [SerializeField] AudioSource MenuMusic;
     [SerializeField] TextMeshProUGUI sirenButtonText;
     [SerializeField] Slider rankboardSlider;
 
@@ -25,6 +26,7 @@ public class MenuManager : MonoBehaviour
 
     GameStatistics gameStatistics;
     Animator rankboardAnim;
+    SettingsScript settingsScript;
 
     [Header("Statistics Objects")]
     [SerializeField] TextMeshProUGUI dayCountText;
@@ -37,8 +39,15 @@ public class MenuManager : MonoBehaviour
     {
         gameStatistics = GetComponent<GameStatistics>();
         rankboardAnim = rankboard.GetComponent<Animator>();
+        settingsScript = GetComponent<SettingsScript>();
+
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.None;
+    }
+
+    private void Update()
+    {
+       MenuMusic.volume = settingsScript.GetMusicVolume();
     }
 
     public void PlayButton()

@@ -4,17 +4,21 @@ using UnityEngine;
 public class StatisticsMenuNPC : MonoBehaviour
 {
     bool npcRotate;
-    bool allowForMove;
+    public bool allowForMove;
     bool workPermit;
 
     Animator anim;
     Rigidbody rb;
+    SettingsScript settingsScript;
     Vector3 startPosition;
+
+    public AudioSource[] footSteps;
 
     private void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+        settingsScript = FindAnyObjectByType<SettingsScript>();
 
         startPosition = transform.position;
     }
@@ -23,12 +27,6 @@ public class StatisticsMenuNPC : MonoBehaviour
     {
         if (workPermit)
         {
-            //if (!wasRotated)
-            //{
-            //    wasRotated = true;
-            //    Invoke(nameof(ChangeRotation), 5f);
-            //}
-
             if (allowForMove)
             {
                 if (npcRotate)
@@ -37,14 +35,18 @@ public class StatisticsMenuNPC : MonoBehaviour
                     rb.velocity = new Vector3(0, 0f, -1f);
             }
         }
-        
+
+        foreach (AudioSource step in footSteps)
+        {
+            step.volume = settingsScript.GetSFXVolume();
+        } 
     }
 
     IEnumerator ChangeRotation()
     {
         while (workPermit)
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(15f);
             npcRotate = !npcRotate;
 
             if (npcRotate)
@@ -95,4 +97,13 @@ public class StatisticsMenuNPC : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f,180f,0f);
     }
 
+    public void FootStepRight()
+    {
+        footSteps[0].Play();
+    }
+
+    public void FootStepLeft()
+    {
+        footSteps[1].Play();
+    }
 }

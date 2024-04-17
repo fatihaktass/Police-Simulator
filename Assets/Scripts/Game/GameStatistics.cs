@@ -50,20 +50,23 @@ public class GameStatistics : MonoBehaviour
             _DayCount++;
 
             if (isFull)
-                _RankPoints += Random.Range(100f, 150f);
+                _RankPoints += Random.Range(180f, 300f);
             else
-                _RankPoints += Random.Range(60f, 100f);
+                _RankPoints += Random.Range(100f, 180f);
 
             PlayerPrefs.SetInt("SuccessDayCount", _SuccessDayCount);
         }
         else
         {
             _DayCount++;
-            _RankPoints -= Random.Range(10f, 40f);
+            _RankPoints -= Random.Range(20f, 100f);
         }
 
         if (_RankPoints <= 0)
             _RankPoints = 0;
+
+        if (_RankPoints > 10000)
+            _RankPoints = 10000;
 
         PlayerPrefs.SetFloat("RankPoints", _RankPoints);
         PlayerPrefs.SetInt("DayCount", _DayCount);

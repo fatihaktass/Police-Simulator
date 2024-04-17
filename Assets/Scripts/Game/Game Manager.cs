@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public int exitCriminal = 0; // Kaçan suçlularý sayar.
     public bool changingCamera; // kameralar arasý geçiþ için kullanýlýyor.
     public bool isCriminal; // eðer karakter suçlu ise true deðer döndürür.
+    float spawnSpeed = 10f;
     bool identityDelimiter; // Sýnýrlayýcýnýn deðerine göre randomIdentity ile random deðer oluþturur ve bu deðere göre kimliði açýp kapatýr.
     bool escPanel;
     bool activeEscPanel = true;
@@ -83,6 +84,8 @@ public class GameManager : MonoBehaviour
         questAndAnswer = FindFirstObjectByType<QuestionsAndAnswers>();
         settingsScript = GetComponent<SettingsScript>();
         gameStatistics = GetComponent<GameStatistics>();
+
+        SpawnSpeedChanger();
 
         StartCoroutine(NPCSpawner());
         DirectionalRotChanger(false);
@@ -218,6 +221,22 @@ public class GameManager : MonoBehaviour
         LightIsOpen = false;
     }
 
+    void SpawnSpeedChanger()
+    {
+        if (gameStatistics.GetRankPoints() < 2000)
+        {
+            spawnSpeed = 10f;
+        }
+        else if (gameStatistics.GetRankPoints() >= 2000 && gameStatistics.GetRankPoints() < 4250)
+        {
+            spawnSpeed = 8f;
+        }
+        else
+        {
+            spawnSpeed = 6f;
+        }
+    }
+
     IEnumerator NPCSpawner()
     {
         while (gameScore < 5 && exitCriminal < 2 && !loseGame)
@@ -228,7 +247,7 @@ public class GameManager : MonoBehaviour
                 int randomSpawnpointsIndex = Random.Range(0, area1Spawnps.Length);
                 // if (randomSpawnpointsIndex > 2)
                 Instantiate(npcs[RandomNPCIndex], area1Spawnps[randomSpawnpointsIndex].transform.position, Quaternion.identity);
-                yield return new WaitForSeconds(10f);
+                yield return new WaitForSeconds(spawnSpeed);
             }
             if (gameStatistics.GetMapIndex() == 1) // oyuncunun görev yeri 2. bölge ise çalýþýr
             {
@@ -236,9 +255,9 @@ public class GameManager : MonoBehaviour
                 int randomSpawnpointsIndex = Random.Range(0, area2Spawnps.Length);
                 // if (randomSpawnpointsIndex > 3)
                 Instantiate(npcs[RandomNPCIndex], area2Spawnps[randomSpawnpointsIndex].transform.position, Quaternion.identity);
-                yield return new WaitForSeconds(10f);
+                yield return new WaitForSeconds(spawnSpeed);
             }
-        }
+        }        
     }
 
     public Transform ExitPoints()
@@ -259,7 +278,6 @@ public class GameManager : MonoBehaviour
         arrestedNPC.transform.position = finishAreaTeleportPoints[tpPointIndex].position + new Vector3(0f, 0.1f);
         tpPointIndex++;
     }
-
 
     public void QueryText(bool isOpening, string Texting)
     {
