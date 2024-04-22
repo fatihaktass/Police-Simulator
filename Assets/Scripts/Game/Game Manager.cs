@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI arrestedInfoText, escapedInfoText;
     public GameObject gameInfos;
     public GameObject warningPanel;
+    public CanvasGroup fadePanel;
 
     [Header("Script Connections")]
     public PlayerController playerController;
@@ -87,6 +88,8 @@ public class GameManager : MonoBehaviour
 
         SpawnSpeedChanger();
 
+        fadePanel.alpha = 0f;
+
         StartCoroutine(NPCSpawner());
         DirectionalRotChanger(false);
         tpPointIndex = 0;
@@ -119,6 +122,9 @@ public class GameManager : MonoBehaviour
         {
             EscPanel();
         }
+
+        if (fadePanel.alpha > 0)
+            fadePanel.alpha -= 1f * Time.deltaTime;
     }
 
     void CameraChanger()
@@ -372,6 +378,7 @@ public class GameManager : MonoBehaviour
     {
         if (playerCanArrest)
         {
+            fadePanel.alpha = 1;
             gameScore++;
             ArrestingNPC = true;
             identityDelimiter = false;

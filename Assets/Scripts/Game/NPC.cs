@@ -58,32 +58,38 @@ public class NPC : MonoBehaviour
     {
         if (isFemale)
         {
-            npcNames = new string[] { "Beyza", "Güneþ", "Esmeralda", "Ýrem", "Burcu", "Sude", "Layla", "Aisha", "Nur", "Elif" };
+            npcNames = new string[] { "Beyza", "Güneþ", "Esmeralda", "Ýrem", "Burcu", "Sude", "Layla", "Erva", "Nur", "Elif", "Çisem" };
         }
         if (!isFemale)
         {
-            npcNames = new string[] { "Fatih", "Ali", "Ýlkay", "Yusuf", "Yiðit", "Bora", "Ahmed", "Omar", "Yusuf", "Hülagü Han" };
+            npcNames = new string[] { "Fatih", "Ali", "Ýlkay", "Yusuf", "Yiðit", "Bora", "Ahmed", "Hamza", "Yusuf", "Hülagü Han", "Elyesa" };
         }
 
-        npcSurNames = new string[] { "Aktaþ", "Güçlü", "Özgün", "Kudret", "Nasip", "Öztürk", "Iþýk", "Selvi", "Aslan", "Tahtacý", "Kulaksýz", "Çetinkaya", "Özbalçýk", "Çakmak", "Akpýnar", "Yýlmaz", "Doðan", "Üzer", "Rashid", "Hassan", "Samaan", "Saleh" };
+        npcSurNames = new string[] { "Aktaþ", "Çetinkaya", "Özgün", "Kudret", "Gültekin", "Öztürk", "Erkan", "Selvi", "Aslan", "Tahtacý", "Kulaksýz", "Görkemli", "Özbalçýk", "Çakmak", "Akpýnar", "Yýlmaz", "Doðan", "Üzer", "Öksüz", "Hassan", "Katip", "Gündüz" };
 
-        randomDay = Random.Range(0, 32);
         randomMonth = Random.Range(0, 13);
         randomYear = Random.Range(1980, 2006);
         identityNumber = Random.Range(120200152, 956241235);
         RandomName = Random.Range(0, npcNames.Length);
         RandomSurName = Random.Range(0, npcSurNames.Length);
 
+        if (randomMonth == 2)
+        {
+            randomDay = Random.Range(0, 29);
+        }
+        else
+        {
+            randomDay = Random.Range(0, 32);
+        }
     }
 
     void TagChanger()
     {
-        int RandomPoint = Random.Range(0, 4);
+        int RandomPoint = Random.Range(0, 5);
         if (RandomPoint <= 1 || gameManager.npcTagChanger == 4 || gameManager.npcCounter >= 20) { isCriminal = true; }
         if (RandomPoint > 1 && gameManager.npcTagChanger <= 3 && gameManager.npcCounter <= 19) { isCriminal = false; }
         if (isCriminal) { gameObject.tag = "Criminal"; gameManager.npcTagChanger = 0; }
-        if (!isCriminal) { gameObject.tag = "NPC"; gameManager.npcTagChanger++; gameManager.npcCounter++; Debug.Log(gameManager.npcCounter); }
-        Debug.Log(gameManager.npcTagChanger);
+        if (!isCriminal) { gameObject.tag = "NPC"; gameManager.npcTagChanger++; gameManager.npcCounter++; }
     }
 
     private void Update()
