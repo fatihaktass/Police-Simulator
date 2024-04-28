@@ -70,7 +70,7 @@ public class QuestionsAndAnswers : MonoBehaviour
             switch (PlayerPrefs.GetInt("FirstQuestion")) // Sorulan sorudan gelen index'e göre sorulan soruyla alakalý cevaplar string dizisinden rastgele çekilir.
             {
                 case 0:
-                    AnswerOne = new string[] { "Evde bunaldým, hava almaya çýktým.", "Evde bunalýnca yürüyüþe çýkayým dedim.", "Ne yapacaksýnýz bu bilgiyi?", "Ýþten erken çýktým, eve gidiyorum." };
+                    AnswerOne = new string[] { "Evde bunaldým, hava almaya çýktým.", "Evde bunalýnca yürüyüþe çýkayým dedim.", "Neden sordunuz? Ne yapacaksýnýz?", "Ýþten erken çýktým, eve gidiyorum." };
                     AnswersTMP.text = AnswerOne[RandomAnswers];
                     break;
                 case 1:
@@ -88,7 +88,7 @@ public class QuestionsAndAnswers : MonoBehaviour
             switch (PlayerPrefs.GetInt("FirstQuestion")) // Sorulan sorudan gelen index'e göre sorulan soruyla alakalý cevaplar string dizisinden rastgele çekilir.
             {
                 case 0:
-                    AnswerOne = new string[] { "Ýþten güçten sýkýldým kendimi dýþarý attým.", "Evde bunalýnca yürüyüþe çýkayým dedim.", "Sana ne arkadaþ?", "Senin ne haddine bunu sormak?." };
+                    AnswerOne = new string[] { "Ýþten güçten sýkýldým kendimi dýþarý attým.", "Evde bunalýnca yürüyüþe çýkayým dedim.", "Sana ne arkadaþ?", "Senin ne haddine bunu sormak?" };
                     AnswersTMP.text = AnswerOne[RandomAnswers];
                     break;
                 case 1:
