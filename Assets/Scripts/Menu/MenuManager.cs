@@ -14,6 +14,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject rankboard;
     [SerializeField] GameObject infoPanel;
     [SerializeField] AudioSource[] policeSiren;
+    [SerializeField] AudioSource[] sfx;
     [SerializeField] AudioSource MenuMusic;
     [SerializeField] TextMeshProUGUI sirenButtonText;
     [SerializeField] Slider rankboardSlider;
@@ -47,7 +48,8 @@ public class MenuManager : MonoBehaviour
 
     private void Update()
     {
-       MenuMusic.volume = settingsScript.GetMusicVolume();
+        MenuMusic.volume = settingsScript.GetMusicVolume();
+        foreach (AudioSource sfx in sfx) { sfx.volume = settingsScript.GetSFXVolume(); }
     }
 
     public void PlayButton()

@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
     public AudioSource victorySFX;
     public AudioSource loseSFX;
     public AudioSource whistleSFX;
+    public AudioSource arrestSFX;
     public AudioSource[] SFXs;
     public AudioSource[] Musics;
 
@@ -385,6 +386,7 @@ public class GameManager : MonoBehaviour
             OpenNPCsIdentity(false);
             QuestionsPanel.SetActive(false);
             arrestedInfoText.text = gameScore.ToString();
+            arrestSFX.Play();
             playerCanArrest = false;
         }
 

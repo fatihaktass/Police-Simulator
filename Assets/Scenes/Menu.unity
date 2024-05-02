@@ -2905,7 +2905,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e1aac4c8a359ed9459cca7f39c1a637b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 88c2464190d91da43b5455f4b8e9590f, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -6958,7 +6958,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 42416a7a6370306488404c0061d1c398, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c2bb0c279edf9024eb7957a837de811f, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -13882,6 +13882,10 @@ MonoBehaviour:
   policeSiren:
   - {fileID: 5504691983030313232}
   - {fileID: 5504691983983917064}
+  sfx:
+  - {fileID: 782738571}
+  - {fileID: 319983373}
+  - {fileID: 909613471}
   MenuMusic: {fileID: 1479756052}
   sirenButtonText: {fileID: 1075647601}
   rankboardSlider: {fileID: 1151311922}
